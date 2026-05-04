@@ -14,7 +14,7 @@ const assumptionLabel = document.querySelector('#assumption-label');
 const assumptionDetail = document.querySelector('#assumption-detail');
 
 let stringsCatalog = [];
-let tuningRows = ['G4', 'G2', 'D3', 'G3', 'B3', 'D4'];
+let tuningRows = ['E2', 'A2', 'D3', 'G3', 'B3', 'E4'];
 let targetTensionLbs = 18;
 let selectedWoundMaterial = 'phosphor_bronze';
 let gaugeOverrides = new Map();
