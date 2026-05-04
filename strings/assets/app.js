@@ -13,14 +13,13 @@ const gaugeStack = document.querySelector('#gauge-stack');
 let stringsCatalog = [];
 let tuningRows = ['G4', 'G2', 'D3', 'G3', 'B3', 'D4'];
 let targetTensionLbs = 18;
-let orderMode = 'as-written';
 let audioContext = null;
 let activeOscillators = [];
 
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const OCTAVES = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 const NOTE_PATTERN = /^([A-G][#b]?)(-?\d+)$/;
-const NOTATION_HELP = 'Use A-G plus an octave, with optional # or b: E2, F#3, Bb4.';
+const NOTATION_HELP = 'Use A-G plus an octave, with optional # or b: E2, F#3, Bb4. Pasted notes fill the rows from ceiling to floor.';
 const SEMITONES_FROM_A4 = {
   C: -9, 'C#': -8, Db: -8, D: -7, 'D#': -6, Eb: -6,
   E: -5, F: -4, 'F#': -3, Gb: -3, G: -2, 'G#': -1, Ab: -1,
@@ -92,14 +91,6 @@ function setTuningHelp(message = NOTATION_HELP, isError = false) {
   tuningHelp.textContent = message;
   tuningHelp.classList.toggle('is-error', isError);
   tuningPaste.setAttribute('aria-invalid', String(isError));
-}
-
-function getDisplayNotes() {
-  const notes = tuningRows.slice();
-  if (orderMode === 'low-high') {
-    return notes.sort((a, b) => noteToHz(a) - noteToHz(b));
-  }
-  return notes;
 }
 
 function recommendString({ note, scaleLengthInches }) {
@@ -189,7 +180,7 @@ function calculate() {
   if (!Number.isFinite(scaleLengthInches) || scaleLengthInches <= 0) {
     throw new Error('Enter a valid scale length.');
   }
-  const results = getDisplayNotes().map(note => recommendString({ note, scaleLengthInches }));
+  const results = tuningRows.map(note => recommendString({ note, scaleLengthInches }));
   renderAnswer(results);
   return results;
 }
@@ -283,14 +274,6 @@ document.querySelectorAll('[data-target]').forEach(button => {
   });
 });
 
-document.querySelectorAll('[data-order]').forEach(button => {
-  button.addEventListener('click', () => {
-    orderMode = button.dataset.order;
-    setActiveButton('[data-order]', button);
-    updateAll();
-  });
-});
-
 scaleInput.addEventListener('input', updateAll);
 
 tuningPaste.addEventListener('change', () => {
@@ -335,7 +318,7 @@ removeStringButton.addEventListener('click', () => {
 
 playAllButton.addEventListener('click', () => {
   stopSound();
-  getDisplayNotes().forEach((note, index) => playNote(note, index * 0.44, 0.62));
+  tuningRows.forEach((note, index) => playNote(note, index * 0.44, 0.62));
 });
 
 muteButton.addEventListener('click', stopSound);

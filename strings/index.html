@@ -84,10 +84,6 @@
             <output id="string-count">6 strings</output>
             <button type="button" class="stepper-button" id="add-string" aria-label="Add string">+</button>
           </div>
-          <div class="order-toggle" role="group" aria-label="String order">
-            <button type="button" class="toggle is-active" data-order="as-written">Top to bottom</button>
-            <button type="button" class="toggle" data-order="low-high">Low to high</button>
-          </div>
         </section>
 
         <section class="panel-section">
@@ -122,9 +118,17 @@
           <span>Paste tuning</span>
           <input id="tuning-paste" value="G4 G2 D3 G3 B3 D4" autocomplete="off" spellcheck="false" aria-describedby="tuning-help">
         </label>
-        <p class="notation-help" id="tuning-help">Use A-G plus an octave, with optional # or b: E2, F#3, Bb4.</p>
+        <p class="notation-help" id="tuning-help">Use A-G plus an octave, with optional # or b: E2, F#3, Bb4. Pasted notes fill the rows from ceiling to floor.</p>
 
+        <div class="orientation-label" aria-hidden="true">
+          <span>Ceiling</span>
+          <span>top row</span>
+        </div>
         <div class="string-editor" id="string-editor" aria-label="String tuning rows"></div>
+        <div class="orientation-label floor-label" aria-hidden="true">
+          <span>Floor</span>
+          <span>bottom row</span>
+        </div>
       </section>
 
       <aside class="answer-panel" aria-live="polite">
