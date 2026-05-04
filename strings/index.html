@@ -120,8 +120,9 @@
 
         <label class="paste-line">
           <span>Paste tuning</span>
-          <input id="tuning-paste" value="G4 G2 D3 G3 B3 D4" autocomplete="off" spellcheck="false">
+          <input id="tuning-paste" value="G4 G2 D3 G3 B3 D4" autocomplete="off" spellcheck="false" aria-describedby="tuning-help">
         </label>
+        <p class="notation-help" id="tuning-help">Use A-G plus an octave, with optional # or b: E2, F#3, Bb4.</p>
 
         <div class="string-editor" id="string-editor" aria-label="String tuning rows"></div>
       </section>

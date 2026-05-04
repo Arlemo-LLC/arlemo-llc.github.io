@@ -270,6 +270,11 @@ select {
   background: #fff;
 }
 
+input[aria-invalid="true"] {
+  border-color: var(--rose);
+  box-shadow: 0 0 0 1px rgba(168, 71, 63, 0.16);
+}
+
 input:focus,
 select:focus,
 button:focus-visible,
@@ -388,8 +393,20 @@ summary:focus-visible {
   grid-template-columns: 98px minmax(0, 1fr);
   gap: 12px;
   align-items: center;
-  padding: 16px 18px;
+  padding: 16px 18px 8px;
+}
+
+.notation-help {
+  margin: 0;
+  padding: 0 18px 16px 128px;
   border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.notation-help.is-error {
+  color: var(--rose);
+  font-weight: 680;
 }
 
 .string-editor {
@@ -615,6 +632,10 @@ article p,
 
   .paste-line {
     grid-template-columns: 1fr;
+  }
+
+  .notation-help {
+    padding-left: 18px;
   }
 
   .string-control-row {

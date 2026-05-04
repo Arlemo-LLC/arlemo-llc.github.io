@@ -2,6 +2,7 @@ const scaleInput = document.querySelector('#scale');
 const stringCountOutput = document.querySelector('#string-count');
 const stringEditor = document.querySelector('#string-editor');
 const tuningPaste = document.querySelector('#tuning-paste');
+const tuningHelp = document.querySelector('#tuning-help');
 const playAllButton = document.querySelector('#play-all');
 const muteButton = document.querySelector('#mute-button');
 const addStringButton = document.querySelector('#add-string');
@@ -17,6 +18,9 @@ let audioContext = null;
 let activeOscillators = [];
 
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+const OCTAVES = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+const NOTE_PATTERN = /^([A-G][#b]?)(-?\d+)$/;
+const NOTATION_HELP = 'Use A-G plus an octave, with optional # or b: E2, F#3, Bb4.';
 const SEMITONES_FROM_A4 = {
   C: -9, 'C#': -8, Db: -8, D: -7, 'D#': -6, Eb: -6,
   E: -5, F: -4, 'F#': -3, Gb: -3, G: -2, 'G#': -1, Ab: -1,
@@ -24,16 +28,21 @@ const SEMITONES_FROM_A4 = {
 };
 
 function noteToHz(note) {
-  const match = /^([A-G][#b]?)(-?\d+)$/.exec(note.trim());
+  const match = NOTE_PATTERN.exec(note.trim());
   if (!match) throw new Error(`Cannot parse "${note}"`);
   const [, letter, octaveText] = match;
   return 440 * Math.pow(2, (SEMITONES_FROM_A4[letter] + 12 * (Number(octaveText) - 4)) / 12);
 }
 
 function parseNote(note) {
-  const match = /^([A-G][#b]?)(-?\d+)$/.exec(note.trim());
-  if (!match) return { name: 'E', octave: 2 };
-  return { name: match[1].replace('Db', 'C#').replace('Eb', 'D#').replace('Gb', 'F#').replace('Ab', 'G#').replace('Bb', 'A#'), octave: Number(match[2]) };
+  const match = NOTE_PATTERN.exec(note.trim());
+  if (!match) return null;
+  const octave = Number(match[2]);
+  if (!OCTAVES.includes(octave)) return null;
+  return {
+    name: match[1].replace('Db', 'C#').replace('Eb', 'D#').replace('Gb', 'F#').replace('Ab', 'G#').replace('Bb', 'A#'),
+    octave,
+  };
 }
 
 function buildNote(name, octave) {
@@ -61,6 +70,28 @@ function parseTuningText(value) {
     .split(/[\s,]+/)
     .map(note => note.trim())
     .filter(Boolean);
+}
+
+function validateTuningText(value) {
+  const tokens = parseTuningText(value);
+  if (!tokens.length) {
+    return { ok: false, message: 'Enter at least one note. Example: E2 A2 D3 G3 B3 E4.' };
+  }
+
+  const parsed = tokens.map(token => ({ token, parsed: parseNote(token) }));
+  const invalid = parsed.filter(item => !item.parsed).map(item => item.token);
+  if (invalid.length) {
+    const quoted = invalid.map(note => `"${note}"`).join(', ');
+    return { ok: false, message: `${quoted} ${invalid.length === 1 ? 'is' : 'are'} not valid. ${NOTATION_HELP}` };
+  }
+
+  return { ok: true, notes: parsed.map(item => buildNote(item.parsed.name, item.parsed.octave)) };
+}
+
+function setTuningHelp(message = NOTATION_HELP, isError = false) {
+  tuningHelp.textContent = message;
+  tuningHelp.classList.toggle('is-error', isError);
+  tuningPaste.setAttribute('aria-invalid', String(isError));
 }
 
 function getDisplayNotes() {
@@ -104,7 +135,7 @@ function renderEditor() {
   stringEditor.replaceChildren();
 
   tuningRows.forEach((note, index) => {
-    const parsed = parseNote(note);
+    const parsed = parseNote(note) ?? { name: 'E', octave: 2 };
     const row = document.createElement('div');
     row.className = 'string-control-row';
     row.dataset.index = String(index);
@@ -119,7 +150,7 @@ function renderEditor() {
       <label>
         <span>Octave</span>
         <select class="octave-select" aria-label="String ${index + 1} octave">
-          ${[1, 2, 3, 4, 5].map(octave => `<option value="${octave}"${octave === parsed.octave ? ' selected' : ''}>${octave}</option>`).join('')}
+          ${OCTAVES.map(octave => `<option value="${octave}"${octave === parsed.octave ? ' selected' : ''}>${octave}</option>`).join('')}
         </select>
       </label>
       <button type="button" class="play-string" data-note="${note}" aria-label="Play ${note}">Play</button>
@@ -263,11 +294,14 @@ document.querySelectorAll('[data-order]').forEach(button => {
 scaleInput.addEventListener('input', updateAll);
 
 tuningPaste.addEventListener('change', () => {
-  const parsed = parseTuningText(tuningPaste.value);
-  if (parsed.length) {
-    tuningRows = parsed;
-    updateAll();
+  const validation = validateTuningText(tuningPaste.value);
+  if (!validation.ok) {
+    setTuningHelp(`${validation.message} Current tuning was not changed.`, true);
+    return;
   }
+  tuningRows = validation.notes;
+  setTuningHelp();
+  updateAll();
 });
 
 stringEditor.addEventListener('change', event => {
