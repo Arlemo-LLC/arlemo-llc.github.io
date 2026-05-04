@@ -241,9 +241,12 @@ function renderAnswer(results) {
       <div class="gauge-main">
         <span class="string-number">${index + 1}</span>
         <strong>${row.note}</strong>
-        <select class="gauge-select" data-index="${index}" aria-label="String ${index + 1} gauge">
-          ${gaugeOptions}
-        </select>
+        <label class="gauge-picker">
+          <span>Gauge</span>
+          <select class="gauge-select" data-index="${index}" aria-label="String ${index + 1} gauge">
+            ${gaugeOptions}
+          </select>
+        </label>
       </div>
       <div class="meter" aria-hidden="true"><span style="width:${fillWidth}%"></span></div>
       <div class="gauge-meta">

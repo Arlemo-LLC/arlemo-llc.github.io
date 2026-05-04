@@ -539,24 +539,38 @@ summary:focus-visible {
 
 .gauge-main {
   display: grid;
-  grid-template-columns: 30px minmax(48px, 1fr) 94px;
+  grid-template-columns: 30px minmax(48px, 1fr) 108px;
 }
 
 .gauge-main strong {
   font-size: 1.15rem;
 }
 
-.gauge-main span:last-child {
-  color: var(--green-dark);
-  font-size: 1.08rem;
-  font-weight: 780;
-  font-variant-numeric: tabular-nums;
+.gauge-picker {
+  display: grid;
+  gap: 4px;
+}
+
+.gauge-picker span {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 760;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 .gauge-select {
+  appearance: none;
+  -webkit-appearance: none;
   min-height: 36px;
-  padding: 0 8px;
+  padding: 0 30px 0 10px;
   color: var(--green-dark);
+  background:
+    linear-gradient(45deg, transparent 50%, var(--green-dark) 50%) calc(100% - 15px) 50% / 6px 6px no-repeat,
+    linear-gradient(135deg, var(--green-dark) 50%, transparent 50%) calc(100% - 10px) 50% / 6px 6px no-repeat,
+    #fff;
+  font-size: 1rem;
   font-weight: 780;
   font-variant-numeric: tabular-nums;
 }
