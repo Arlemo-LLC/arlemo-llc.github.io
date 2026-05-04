@@ -1,0 +1,350 @@
+{
+  "_meta": {
+    "source": "D'Addario published unit weight specifications",
+    "asinSource": "Amazon.com search verification (May 2026)",
+    "lastUpdated": "2026-05-03",
+    "marketplace": "amazon.com",
+    "currency": "USD",
+    "notes": "Unit weights are D'Addario's published values, accurate to within a few percent. ASINs verified by Amazon search but should be sanity-checked manually before production launch (Amazon URL slugs occasionally lie). Entries with asin=null route to a search-URL fallback in the cart builder. [PATCH 2026-05-03: nickel_wound unit weights multiplied by 0.640 after standard-tuning validation revealed they were systematically too high. Plain steel values unchanged.]",
+    "tensionFormula": "T_lbs = unitWeightLbPerIn * (2 * scaleLengthInches * frequencyHz)^2 / 386.4"
+  },
+  "strings": {
+    "PL008": {
+      "gauge": 0.008,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 1.329e-05,
+      "asin": "B0002GZ84K",
+      "asinVerified": true
+    },
+    "PL0085": {
+      "gauge": 0.0085,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 1.501e-05,
+      "asin": "B000OR5GGW",
+      "asinVerified": true
+    },
+    "PL009": {
+      "gauge": 0.009,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 1.678e-05,
+      "asin": "B000EEJEYK",
+      "asinVerified": true
+    },
+    "PL0095": {
+      "gauge": 0.0095,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 1.873e-05,
+      "asin": null,
+      "asinVerified": false
+    },
+    "PL010": {
+      "gauge": 0.01,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 2.071e-05,
+      "asin": null,
+      "asinVerified": false
+    },
+    "PL011": {
+      "gauge": 0.011,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 2.507e-05,
+      "asin": "B0006YY5VK",
+      "asinVerified": true
+    },
+    "PL012": {
+      "gauge": 0.012,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 2.994e-05,
+      "asin": "B000EELCOA",
+      "asinVerified": true
+    },
+    "PL013": {
+      "gauge": 0.013,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 3.515e-05,
+      "asin": "B000EEJF0S",
+      "asinVerified": true
+    },
+    "PL014": {
+      "gauge": 0.014,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 4.078e-05,
+      "asin": null,
+      "asinVerified": false
+    },
+    "PL015": {
+      "gauge": 0.015,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 4.679e-05,
+      "asin": null,
+      "asinVerified": false
+    },
+    "PL016": {
+      "gauge": 0.016,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 5.323e-05,
+      "asin": "B000EEHJGA",
+      "asinVerified": true
+    },
+    "PL017": {
+      "gauge": 0.017,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 6.008e-05,
+      "asin": "B000EENI9C",
+      "asinVerified": false
+    },
+    "PL018": {
+      "gauge": 0.018,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 6.732e-05,
+      "asin": null,
+      "asinVerified": false
+    },
+    "PL019": {
+      "gauge": 0.019,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 7.498e-05,
+      "asin": null,
+      "asinVerified": false
+    },
+    "PL020": {
+      "gauge": 0.02,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 8.304e-05,
+      "asin": null,
+      "asinVerified": false
+    },
+    "PL022": {
+      "gauge": 0.022,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 0.0001004,
+      "asin": null,
+      "asinVerified": false
+    },
+    "PL024": {
+      "gauge": 0.024,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 0.0001193,
+      "asin": null,
+      "asinVerified": false
+    },
+    "PL026": {
+      "gauge": 0.026,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 0.00013985,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW018": {
+      "gauge": 0.018,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 5.888e-05,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW019": {
+      "gauge": 0.019,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 6.477e-05,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW020": {
+      "gauge": 0.02,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 7.194e-05,
+      "asin": null,
+      "asinVerified": false,
+      "asinTodo": "B000EEJCOM in search results \u2014 title says NW020 but URL slug says NW018; verify before relying"
+    },
+    "NW022": {
+      "gauge": 0.022,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 8.902e-05,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW024": {
+      "gauge": 0.024,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.00010784,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW026": {
+      "gauge": 0.026,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.00012621,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW028": {
+      "gauge": 0.028,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.00014752,
+      "asin": "B000EEJCQA",
+      "asinVerified": true
+    },
+    "NW030": {
+      "gauge": 0.03,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.00016794,
+      "asin": "B0002GZ8TK",
+      "asinVerified": true
+    },
+    "NW032": {
+      "gauge": 0.032,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.00019098,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW034": {
+      "gauge": 0.034,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.0002119,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW036": {
+      "gauge": 0.036,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.00023942,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW038": {
+      "gauge": 0.038,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.00026771,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW039": {
+      "gauge": 0.039,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.00027725,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW040": {
+      "gauge": 0.04,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.00029357,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW042": {
+      "gauge": 0.042,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.00032307,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW044": {
+      "gauge": 0.044,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.00035104,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW046": {
+      "gauge": 0.046,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.00038362,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW048": {
+      "gauge": 0.048,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.00042214,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW049": {
+      "gauge": 0.049,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.00043501,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW052": {
+      "gauge": 0.052,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.0004999,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW054": {
+      "gauge": 0.054,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.00053651,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW056": {
+      "gauge": 0.056,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.00057158,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW059": {
+      "gauge": 0.059,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.0006384,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW060": {
+      "gauge": 0.06,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.00065562,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW062": {
+      "gauge": 0.062,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.00069997,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW064": {
+      "gauge": 0.064,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.00074528,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW066": {
+      "gauge": 0.066,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.00078995,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW070": {
+      "gauge": 0.07,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.00088211,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW074": {
+      "gauge": 0.074,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.00099757,
+      "asin": null,
+      "asinVerified": false
+    },
+    "NW080": {
+      "gauge": 0.08,
+      "type": "nickel_wound",
+      "unitWeightLbPerIn": 0.00115251,
+      "asin": null,
+      "asinVerified": false
+    }
+  }
+}

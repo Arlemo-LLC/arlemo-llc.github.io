@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Strings by Arlemo | String Gauge Calculator for Custom Tunings</title>
+  <meta name="description" content="A practical string gauge calculator for custom guitar tunings. Enter notes, scale length, and target feel to hear pitches and estimate string gauges.">
+  <link rel="canonical" href="https://arlemo.com/strings/">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Strings by Arlemo home">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>Strings</span>
+    </a>
+    <nav aria-label="Site">
+      <a href="#calculator">Calculator</a>
+      <a href="#notes">Notes</a>
+      <a href="privacy.html">Privacy</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="tool-band" id="calculator" aria-labelledby="page-title">
+      <div class="tool-shell">
+        <div class="intro">
+          <p class="eyebrow">Custom tuning string gauge calculator</p>
+          <h1 id="page-title">Find workable string gauges before you buy another set.</h1>
+          <p class="summary">
+            Enter a tuning, scale length, and target feel. Strings estimates tension, recommends nearby gauges,
+            and lets you hear each pitch so the tuning is easy to sanity-check.
+          </p>
+        </div>
+
+        <form class="calculator" id="calculator-form">
+          <label class="field">
+            <span>Tuning</span>
+            <input id="tuning" name="tuning" value="G4 G2 D3 G3 B3 D4" autocomplete="off" spellcheck="false">
+            <small>Write notes with octaves. Example: <strong>G4 G2 D3 G3 B3 D4</strong>.</small>
+          </label>
+
+          <div class="control-grid">
+            <label class="field">
+              <span>Scale length</span>
+              <select id="scale" name="scale">
+                <option value="24">24 in</option>
+                <option value="24.75" selected>24.75 in</option>
+                <option value="25.5">25.5 in</option>
+                <option value="26.5">26.5 in</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Feel target</span>
+              <select id="target" name="target">
+                <option value="14">Light</option>
+                <option value="16">Balanced</option>
+                <option value="18" selected>Firm</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>String order</span>
+              <select id="order" name="order">
+                <option value="as-written" selected>As written</option>
+                <option value="low-high">Low to high</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="actions">
+            <button class="primary" type="submit">Calculate</button>
+            <button class="secondary" type="button" id="play-all">Play pitches</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="results-band" aria-live="polite">
+      <div class="results-layout">
+        <div class="visual-panel" aria-label="String tension visualization">
+          <div class="instrument-head">
+            <span>Pitch check</span>
+            <button class="icon-button" type="button" id="mute-button" aria-label="Stop sound">■</button>
+          </div>
+          <div class="string-visual" id="string-visual"></div>
+        </div>
+
+        <div class="table-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Estimated answer</p>
+              <h2>Recommended gauges</h2>
+            </div>
+            <p id="total-tension" class="total-tension">-</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>String</th>
+                  <th>Note</th>
+                  <th>Gauge</th>
+                  <th>Type</th>
+                  <th>Tension</th>
+                </tr>
+              </thead>
+              <tbody id="results-body"></tbody>
+            </table>
+          </div>
+          <p class="caveat">
+            Early calculator preview. Product links are added only after affiliate setup and ASIN verification.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-band" id="notes">
+      <div class="content-grid">
+        <article>
+          <h2>Why this exists</h2>
+          <p>
+            Most string tension tools are fine for standard tunings and clumsy for weird ones. Strings is built
+            around the practical question players actually have: what should I put on this instrument today?
+          </p>
+        </article>
+        <article>
+          <h2>How it works</h2>
+          <p>
+            The calculator converts each note to frequency, uses scale length and string unit weight to estimate
+            pounds of tension, then chooses the closest available gauge for the selected feel target.
+          </p>
+        </article>
+        <article>
+          <h2>Buying links</h2>
+          <p>
+            The buying flow will favor close stock sets first and custom singles when the tuning needs them. We
+            verify product IDs before turning on direct cart links.
+          </p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>As an Amazon Associate I earn from qualifying purchases.</p>
+    <p><a href="privacy.html">Privacy and affiliate disclosure</a></p>
+  </footer>
+
+  <script type="module" src="assets/app.js"></script>
+</body>
+</html>
