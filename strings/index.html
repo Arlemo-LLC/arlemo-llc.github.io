@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Strings by Arlemo | String Gauge Calculator for Custom Tunings</title>
-  <meta name="description" content="A practical string gauge calculator for custom guitar tunings. Enter notes, scale length, and target feel to hear pitches and estimate string gauges.">
+  <meta name="description" content="A practical string gauge calculator for custom guitar tunings. Choose scale length, notes, octaves, and target feel to hear pitches and estimate string gauges.">
   <link rel="canonical" href="https://arlemo.com/strings/">
   <link rel="stylesheet" href="assets/styles.css">
 </head>
@@ -22,98 +22,114 @@
   </header>
 
   <main>
-    <section class="tool-band" id="calculator" aria-labelledby="page-title">
-      <div class="tool-shell">
-        <div class="intro">
-          <p class="eyebrow">Custom tuning string gauge calculator</p>
-          <h1 id="page-title">Find workable string gauges before you buy another set.</h1>
-          <p class="summary">
-            Enter a tuning, scale length, and target feel. Strings estimates tension, recommends nearby gauges,
-            and lets you hear each pitch so the tuning is easy to sanity-check.
-          </p>
-        </div>
-
-        <form class="calculator" id="calculator-form">
-          <label class="field">
-            <span>Tuning</span>
-            <input id="tuning" name="tuning" value="G4 G2 D3 G3 B3 D4" autocomplete="off" spellcheck="false">
-            <small>Write notes with octaves. Example: <strong>G4 G2 D3 G3 B3 D4</strong>.</small>
-          </label>
-
-          <div class="control-grid">
-            <label class="field">
-              <span>Scale length</span>
-              <select id="scale" name="scale">
-                <option value="24">24 in</option>
-                <option value="24.75" selected>24.75 in</option>
-                <option value="25.5">25.5 in</option>
-                <option value="26.5">26.5 in</option>
-              </select>
-            </label>
-
-            <label class="field">
-              <span>Feel target</span>
-              <select id="target" name="target">
-                <option value="14">Light</option>
-                <option value="16">Balanced</option>
-                <option value="18" selected>Firm</option>
-              </select>
-            </label>
-
-            <label class="field">
-              <span>String order</span>
-              <select id="order" name="order">
-                <option value="as-written" selected>As written</option>
-                <option value="low-high">Low to high</option>
-              </select>
-            </label>
-          </div>
-
-          <div class="actions">
-            <button class="primary" type="submit">Calculate</button>
-            <button class="secondary" type="button" id="play-all">Play pitches</button>
-          </div>
-        </form>
+    <section class="hero-band" id="calculator" aria-labelledby="page-title">
+      <div class="hero-copy">
+        <p class="eyebrow">Custom tuning string gauge calculator</p>
+        <h1 id="page-title">Tune first. Let the gauges follow.</h1>
+        <p class="summary">
+          Set the scale length, choose notes for each string, hear the pitches, and get a practical gauge estimate
+          without turning the whole thing into a spreadsheet.
+        </p>
       </div>
     </section>
 
-    <section class="results-band" aria-live="polite">
-      <div class="results-layout">
-        <div class="visual-panel" aria-label="String tension visualization">
-          <div class="instrument-head">
-            <span>Pitch check</span>
-            <button class="icon-button" type="button" id="mute-button" aria-label="Stop sound">■</button>
+    <section class="workbench" aria-label="String gauge calculator">
+      <form class="setup-panel" id="calculator-form">
+        <section class="panel-section">
+          <div class="section-head">
+            <span class="step">1</span>
+            <div>
+              <h2>Scale length</h2>
+              <p>Start with the guitar, not the catalog.</p>
+            </div>
           </div>
-          <div class="string-visual" id="string-visual"></div>
+          <div class="scale-options" role="group" aria-label="Common scale lengths">
+            <button type="button" class="chip" data-scale-option="24">24"</button>
+            <button type="button" class="chip is-active" data-scale-option="24.75">24.75"</button>
+            <button type="button" class="chip" data-scale-option="25.5">25.5"</button>
+            <button type="button" class="chip" data-scale-option="27">27"</button>
+          </div>
+          <label class="field compact">
+            <span>Custom</span>
+            <input id="scale" name="scale" inputmode="decimal" value="24.75" aria-label="Scale length in inches">
+          </label>
+          <details class="nerd-note">
+            <summary>Multiscale or fanned fret?</summary>
+            <p>For now, use an average scale length. Per-string scale length is the next advanced control.</p>
+          </details>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-head">
+            <span class="step">2</span>
+            <div>
+              <h2>Strings</h2>
+              <p>Add or remove rows. Six is the default.</p>
+            </div>
+          </div>
+          <div class="stepper">
+            <button type="button" class="stepper-button" id="remove-string" aria-label="Remove string">-</button>
+            <output id="string-count">6 strings</output>
+            <button type="button" class="stepper-button" id="add-string" aria-label="Add string">+</button>
+          </div>
+          <div class="order-toggle" role="group" aria-label="String order">
+            <button type="button" class="toggle is-active" data-order="as-written">Top to bottom</button>
+            <button type="button" class="toggle" data-order="low-high">Low to high</button>
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-head">
+            <span class="step">3</span>
+            <div>
+              <h2>Feel</h2>
+              <p>Pick a target, then adjust by ear and hand.</p>
+            </div>
+          </div>
+          <div class="feel-options" role="group" aria-label="Target feel">
+            <button type="button" class="feel" data-target="14">Light</button>
+            <button type="button" class="feel" data-target="16">Balanced</button>
+            <button type="button" class="feel is-active" data-target="18">Firm</button>
+          </div>
+        </section>
+      </form>
+
+      <section class="tuning-panel">
+        <div class="panel-title-row">
+          <div>
+            <p class="eyebrow">Tuning</p>
+            <h2>Pick notes and octaves</h2>
+          </div>
+          <div class="panel-actions">
+            <button type="button" class="secondary" id="play-all">Play all</button>
+            <button type="button" class="icon-button" id="mute-button" aria-label="Stop sound">■</button>
+          </div>
         </div>
 
-        <div class="table-panel">
-          <div class="panel-head">
-            <div>
-              <p class="eyebrow">Estimated answer</p>
-              <h2>Recommended gauges</h2>
-            </div>
-            <p id="total-tension" class="total-tension">-</p>
+        <label class="paste-line">
+          <span>Paste tuning</span>
+          <input id="tuning-paste" value="G4 G2 D3 G3 B3 D4" autocomplete="off" spellcheck="false">
+        </label>
+
+        <div class="string-editor" id="string-editor" aria-label="String tuning rows"></div>
+      </section>
+
+      <aside class="answer-panel" aria-live="polite">
+        <div class="panel-title-row">
+          <div>
+            <p class="eyebrow">Answer</p>
+            <h2>Estimated gauges</h2>
           </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>String</th>
-                  <th>Note</th>
-                  <th>Gauge</th>
-                  <th>Type</th>
-                  <th>Tension</th>
-                </tr>
-              </thead>
-              <tbody id="results-body"></tbody>
-            </table>
-          </div>
-          <p class="caveat">
-            Early calculator preview. Product links are added only after affiliate setup and ASIN verification.
-          </p>
+          <p class="total-tension" id="total-tension">-</p>
         </div>
-      </div>
+
+        <div class="gauge-stack" id="gauge-stack"></div>
+
+        <div class="answer-note">
+          <strong id="assumption-label">Assuming plain steel + nickel wound.</strong>
+          <span>Acoustic bronze, nylon, and per-string scale length come next.</span>
+        </div>
+      </aside>
     </section>
 
     <section class="content-band" id="notes">
