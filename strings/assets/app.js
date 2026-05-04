@@ -30,22 +30,22 @@ const MATERIALS = {
   phosphor_bronze: {
     label: 'Phosphor Bronze',
     type: 'phosphor_bronze',
-    note: 'Warm, balanced acoustic wound strings.',
+    note: 'D\'Addario describes this family as warm, bright, and balanced.',
   },
   bronze_80_20: {
     label: '80/20 Bronze',
     type: 'bronze_80_20',
-    note: 'Brighter acoustic wound strings with a sharper attack.',
+    note: 'D\'Addario describes this family as deep, bright, and projecting.',
   },
   nickel_bronze: {
     label: 'Nickel Bronze',
     type: 'nickel_bronze',
-    note: 'Clearer wound strings with a stronger fundamental.',
+    note: 'D\'Addario describes this family as full-spectrum and revealing.',
   },
   silk_steel: {
     label: 'Silk & Steel',
     type: 'silk_steel',
-    note: 'Softer, lower-tension wound strings for a gentler feel.',
+    note: 'D\'Addario describes this family as soft, easy, warm, and mellow.',
   },
 };
 const TYPE_LABELS = {
@@ -190,9 +190,9 @@ function setActiveButton(selector, button) {
 
 function syncMaterialCopy() {
   const material = MATERIALS[selectedWoundMaterial];
-  materialNote.textContent = `${material.note} Plain strings stay steel.`;
-  assumptionLabel.textContent = `${material.label} wound strings with plain steel trebles.`;
-  assumptionDetail.textContent = 'A3 and above are treated as plain steel; lower rows are treated as wound. Change a gauge to see the tension math update.';
+  materialNote.textContent = `${material.note} Only wound rows use this material; plain rows stay steel.`;
+  assumptionLabel.textContent = `${material.label} where the row is wound; plain steel where the row is plain.`;
+  assumptionDetail.textContent = 'Rows labeled plain steel are not affected by the material picker. Change a gauge to see the tension math update.';
 }
 
 function renderEditor() {
