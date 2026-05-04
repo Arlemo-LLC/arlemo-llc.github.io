@@ -190,7 +190,8 @@ h2 {
 }
 
 .scale-options,
-.feel-options {
+.feel-options,
+.material-options {
   display: grid;
   gap: 8px;
 }
@@ -200,6 +201,10 @@ h2 {
 }
 
 .feel-options {
+  grid-template-columns: 1fr;
+}
+
+.material-options {
   grid-template-columns: 1fr;
 }
 
@@ -213,6 +218,7 @@ button {
 
 .chip,
 .feel,
+.material,
 .stepper-button,
 .play-string {
   border: 1px solid #cbd3c6;
@@ -222,16 +228,43 @@ button {
 
 .chip:hover,
 .feel:hover,
+.material:hover,
 .stepper-button:hover,
 .play-string:hover {
   background: #f0f4ed;
 }
 
 .chip.is-active,
-.feel.is-active {
+.feel.is-active,
+.material.is-active {
   border-color: var(--green);
   color: #fff;
   background: var(--green);
+}
+
+.material {
+  display: grid;
+  gap: 2px;
+  align-content: center;
+  min-height: 58px;
+  padding: 8px 10px;
+  text-align: left;
+}
+
+.material small {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 650;
+}
+
+.material.is-active small {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.material-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.86rem;
 }
 
 .field {
@@ -536,7 +569,7 @@ summary:focus-visible {
 
 .content-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 28px;
   max-width: 1180px;
   margin: 0 auto;

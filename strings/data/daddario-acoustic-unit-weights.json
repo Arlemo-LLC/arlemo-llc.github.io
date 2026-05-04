@@ -1,0 +1,419 @@
+{
+  "_meta": {
+    "source": "D'Addario product-page string tension charts, converted back to unit weight with the D'Addario tension formula",
+    "lastUpdated": "2026-05-04",
+    "scaleLengthInches": 25.5,
+    "tensionFormula": "T_lbs = unitWeightLbPerIn * (2 * scaleLengthInches * frequencyHz)^2 / 386.4",
+    "notes": "This acoustic-first catalog is for gauge/tension estimation. Wound strings are material-specific. Plain strings are modeled as plain steel regardless of wound-material choice."
+  },
+  "strings": {
+    "PL008": {
+      "gauge": 0.008,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 0.00001418,
+      "source": "D'Addario published plain-steel unit weight"
+    },
+    "PL0085": {
+      "gauge": 0.0085,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 0.00001601,
+      "source": "D'Addario published plain-steel unit weight"
+    },
+    "PL009": {
+      "gauge": 0.009,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 0.00001794,
+      "source": "D'Addario published plain-steel unit weight"
+    },
+    "PL0095": {
+      "gauge": 0.0095,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 0.00001999,
+      "source": "D'Addario published plain-steel unit weight"
+    },
+    "PL010": {
+      "gauge": 0.01,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 0.00002215,
+      "source": "EJ10 product tension chart"
+    },
+    "PL0105": {
+      "gauge": 0.0105,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 0.00002442,
+      "source": "D'Addario published plain-steel unit weight"
+    },
+    "PL011": {
+      "gauge": 0.011,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 0.0000268,
+      "source": "EJ26 product tension chart"
+    },
+    "PL0115": {
+      "gauge": 0.0115,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 0.0000293,
+      "source": "D'Addario published plain-steel unit weight"
+    },
+    "PL012": {
+      "gauge": 0.012,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 0.00003199,
+      "source": "EJ16 product tension chart"
+    },
+    "PL013": {
+      "gauge": 0.013,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 0.00003746,
+      "source": "EJ17 product tension chart"
+    },
+    "PL0135": {
+      "gauge": 0.0135,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 0.00004037,
+      "source": "D'Addario published plain-steel unit weight"
+    },
+    "PL014": {
+      "gauge": 0.014,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 0.00004348,
+      "source": "EJ18 product tension chart"
+    },
+    "PL015": {
+      "gauge": 0.015,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 0.00004994,
+      "source": "EJ26 product tension chart"
+    },
+    "PL016": {
+      "gauge": 0.016,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 0.00005676,
+      "source": "EJ16 product tension chart"
+    },
+    "PL017": {
+      "gauge": 0.017,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 0.00006407,
+      "source": "EJ17 product tension chart"
+    },
+    "PL018": {
+      "gauge": 0.018,
+      "type": "plain_steel",
+      "unitWeightLbPerIn": 0.00007187,
+      "source": "EJ18 product tension chart"
+    },
+    "PB022": {
+      "gauge": 0.022,
+      "type": "phosphor_bronze",
+      "unitWeightLbPerIn": 0.00009823,
+      "source": "EJ26 product tension chart"
+    },
+    "PB021": {
+      "gauge": 0.021,
+      "type": "phosphor_bronze",
+      "unitWeightLbPerIn": 0.00008944,
+      "source": "D'Addario published phosphor-bronze unit weight"
+    },
+    "PB023": {
+      "gauge": 0.023,
+      "type": "phosphor_bronze",
+      "unitWeightLbPerIn": 0.00010789,
+      "source": "EJ15 product tension chart"
+    },
+    "PB024": {
+      "gauge": 0.024,
+      "type": "phosphor_bronze",
+      "unitWeightLbPerIn": 0.0001164,
+      "source": "EJ16 product tension chart"
+    },
+    "PB025": {
+      "gauge": 0.025,
+      "type": "phosphor_bronze",
+      "unitWeightLbPerIn": 0.00012684,
+      "source": "EJ19 product tension chart"
+    },
+    "PB026": {
+      "gauge": 0.026,
+      "type": "phosphor_bronze",
+      "unitWeightLbPerIn": 0.00013574,
+      "source": "EJ17 product tension chart"
+    },
+    "PB027": {
+      "gauge": 0.027,
+      "type": "phosphor_bronze",
+      "unitWeightLbPerIn": 0.00014734,
+      "source": "EJ18 product tension chart"
+    },
+    "PB030": {
+      "gauge": 0.03,
+      "type": "phosphor_bronze",
+      "unitWeightLbPerIn": 0.00018398,
+      "source": "EJ15 product tension chart"
+    },
+    "PB032": {
+      "gauge": 0.032,
+      "type": "phosphor_bronze",
+      "unitWeightLbPerIn": 0.00020603,
+      "source": "EJ16 product tension chart"
+    },
+    "PB035": {
+      "gauge": 0.035,
+      "type": "phosphor_bronze",
+      "unitWeightLbPerIn": 0.00024737,
+      "source": "EJ17 product tension chart"
+    },
+    "PB039": {
+      "gauge": 0.039,
+      "type": "phosphor_bronze",
+      "unitWeightLbPerIn": 0.00030326,
+      "source": "EJ15 product tension chart"
+    },
+    "PB042": {
+      "gauge": 0.042,
+      "type": "phosphor_bronze",
+      "unitWeightLbPerIn": 0.00035482,
+      "source": "EJ16 product tension chart"
+    },
+    "PB045": {
+      "gauge": 0.045,
+      "type": "phosphor_bronze",
+      "unitWeightLbPerIn": 0.0004027,
+      "source": "EJ17 product tension chart"
+    },
+    "PB047": {
+      "gauge": 0.047,
+      "type": "phosphor_bronze",
+      "unitWeightLbPerIn": 0.00043533,
+      "source": "EJ15 product tension chart"
+    },
+    "PB049": {
+      "gauge": 0.049,
+      "type": "phosphor_bronze",
+      "unitWeightLbPerIn": 0.00047269,
+      "source": "EJ18 product tension chart"
+    },
+    "PB052": {
+      "gauge": 0.052,
+      "type": "phosphor_bronze",
+      "unitWeightLbPerIn": 0.0005294,
+      "source": "EJ26 product tension chart"
+    },
+    "PB053": {
+      "gauge": 0.053,
+      "type": "phosphor_bronze",
+      "unitWeightLbPerIn": 0.00054471,
+      "source": "EJ16 product tension chart"
+    },
+    "PB056": {
+      "gauge": 0.056,
+      "type": "phosphor_bronze",
+      "unitWeightLbPerIn": 0.00060816,
+      "source": "EJ17 product tension chart"
+    },
+    "PB059": {
+      "gauge": 0.059,
+      "type": "phosphor_bronze",
+      "unitWeightLbPerIn": 0.00067816,
+      "source": "EJ18 product tension chart"
+    },
+    "BW020": {
+      "gauge": 0.02,
+      "type": "bronze_80_20",
+      "unitWeightLbPerIn": 0.00007862,
+      "source": "D'Addario published 80/20-bronze unit weight"
+    },
+    "BW021": {
+      "gauge": 0.021,
+      "type": "bronze_80_20",
+      "unitWeightLbPerIn": 0.00008626,
+      "source": "D'Addario published 80/20-bronze unit weight"
+    },
+    "BW022": {
+      "gauge": 0.022,
+      "type": "bronze_80_20",
+      "unitWeightLbPerIn": 0.00009462,
+      "source": "D'Addario published 80/20-bronze unit weight"
+    },
+    "BW023": {
+      "gauge": 0.023,
+      "type": "bronze_80_20",
+      "unitWeightLbPerIn": 0.00010519,
+      "source": "EJ10 product tension chart"
+    },
+    "BW024": {
+      "gauge": 0.024,
+      "type": "bronze_80_20",
+      "unitWeightLbPerIn": 0.00011292,
+      "source": "EJ11 product tension chart"
+    },
+    "BW025": {
+      "gauge": 0.025,
+      "type": "bronze_80_20",
+      "unitWeightLbPerIn": 0.00012375,
+      "source": "EJ14 product tension chart"
+    },
+    "BW026": {
+      "gauge": 0.026,
+      "type": "bronze_80_20",
+      "unitWeightLbPerIn": 0.00013226,
+      "source": "EJ12 product tension chart"
+    },
+    "BW030": {
+      "gauge": 0.03,
+      "type": "bronze_80_20",
+      "unitWeightLbPerIn": 0.00017846,
+      "source": "EJ10 product tension chart"
+    },
+    "BW032": {
+      "gauge": 0.032,
+      "type": "bronze_80_20",
+      "unitWeightLbPerIn": 0.00019983,
+      "source": "EJ11 product tension chart"
+    },
+    "BW035": {
+      "gauge": 0.035,
+      "type": "bronze_80_20",
+      "unitWeightLbPerIn": 0.00023428,
+      "source": "EJ12 product tension chart"
+    },
+    "BW039": {
+      "gauge": 0.039,
+      "type": "bronze_80_20",
+      "unitWeightLbPerIn": 0.00029221,
+      "source": "EJ10 product tension chart"
+    },
+    "BW042": {
+      "gauge": 0.042,
+      "type": "bronze_80_20",
+      "unitWeightLbPerIn": 0.00033763,
+      "source": "EJ11 product tension chart"
+    },
+    "BW045": {
+      "gauge": 0.045,
+      "type": "bronze_80_20",
+      "unitWeightLbPerIn": 0.00038797,
+      "source": "EJ12 product tension chart"
+    },
+    "BW047": {
+      "gauge": 0.047,
+      "type": "bronze_80_20",
+      "unitWeightLbPerIn": 0.00042002,
+      "source": "EJ10 product tension chart"
+    },
+    "BW053": {
+      "gauge": 0.053,
+      "type": "bronze_80_20",
+      "unitWeightLbPerIn": 0.00052503,
+      "source": "EJ11 product tension chart"
+    },
+    "BW056": {
+      "gauge": 0.056,
+      "type": "bronze_80_20",
+      "unitWeightLbPerIn": 0.00058409,
+      "source": "EJ12 product tension chart"
+    },
+    "NB022": {
+      "gauge": 0.022,
+      "type": "nickel_bronze",
+      "unitWeightLbPerIn": 0.00009784,
+      "source": "D'Addario product tension chart"
+    },
+    "NB023": {
+      "gauge": 0.023,
+      "type": "nickel_bronze",
+      "unitWeightLbPerIn": 0.00010751,
+      "source": "D'Addario product tension chart"
+    },
+    "NB024": {
+      "gauge": 0.024,
+      "type": "nickel_bronze",
+      "unitWeightLbPerIn": 0.00011563,
+      "source": "NB1253 product tension chart"
+    },
+    "NB025": {
+      "gauge": 0.025,
+      "type": "nickel_bronze",
+      "unitWeightLbPerIn": 0.00012649,
+      "source": "D'Addario product tension chart"
+    },
+    "NB026": {
+      "gauge": 0.026,
+      "type": "nickel_bronze",
+      "unitWeightLbPerIn": 0.00013535,
+      "source": "NB1356 product tension chart"
+    },
+    "NB030": {
+      "gauge": 0.03,
+      "type": "nickel_bronze",
+      "unitWeightLbPerIn": 0.00018329,
+      "source": "D'Addario product tension chart"
+    },
+    "NB032": {
+      "gauge": 0.032,
+      "type": "nickel_bronze",
+      "unitWeightLbPerIn": 0.00020534,
+      "source": "NB1253 product tension chart"
+    },
+    "NB035": {
+      "gauge": 0.035,
+      "type": "nickel_bronze",
+      "unitWeightLbPerIn": 0.00024599,
+      "source": "NB1356 product tension chart"
+    },
+    "NB039": {
+      "gauge": 0.039,
+      "type": "nickel_bronze",
+      "unitWeightLbPerIn": 0.0003008,
+      "source": "D'Addario product tension chart"
+    },
+    "NB042": {
+      "gauge": 0.042,
+      "type": "nickel_bronze",
+      "unitWeightLbPerIn": 0.00035359,
+      "source": "NB1253 product tension chart"
+    },
+    "NB045": {
+      "gauge": 0.045,
+      "type": "nickel_bronze",
+      "unitWeightLbPerIn": 0.00040025,
+      "source": "NB1356 product tension chart"
+    },
+    "NB053": {
+      "gauge": 0.053,
+      "type": "nickel_bronze",
+      "unitWeightLbPerIn": 0.00054253,
+      "source": "NB1253 product tension chart"
+    },
+    "NB056": {
+      "gauge": 0.056,
+      "type": "nickel_bronze",
+      "unitWeightLbPerIn": 0.00060378,
+      "source": "NB1356 product tension chart"
+    },
+    "J4003": {
+      "gauge": 0.022,
+      "type": "silk_steel",
+      "unitWeightLbPerIn": 0.0000874,
+      "source": "EJ40 product tension chart"
+    },
+    "J4004": {
+      "gauge": 0.028,
+      "type": "silk_steel",
+      "unitWeightLbPerIn": 0.00011852,
+      "source": "EJ40 product tension chart"
+    },
+    "J4005": {
+      "gauge": 0.038,
+      "type": "silk_steel",
+      "unitWeightLbPerIn": 0.0002345,
+      "source": "EJ40 product tension chart"
+    },
+    "J4006": {
+      "gauge": 0.047,
+      "type": "silk_steel",
+      "unitWeightLbPerIn": 0.00035221,
+      "source": "EJ40 product tension chart"
+    }
+  }
+}

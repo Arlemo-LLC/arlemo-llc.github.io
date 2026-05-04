@@ -6,6 +6,7 @@
   <title>Strings by Arlemo | String Gauge Calculator for Custom Tunings</title>
   <meta name="description" content="A practical string gauge calculator for custom guitar tunings. Choose scale length, notes, octaves, and target feel to hear pitches and estimate string gauges.">
   <link rel="canonical" href="https://arlemo.com/strings/">
+  <link rel="icon" href="data:,">
   <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
@@ -90,6 +91,35 @@
           <div class="section-head">
             <span class="step">3</span>
             <div>
+              <h2>Wound material</h2>
+              <p>Plain strings stay steel. This changes the wound strings.</p>
+            </div>
+          </div>
+          <div class="material-options" role="group" aria-label="Wound string material">
+            <button type="button" class="material is-active" data-material="phosphor_bronze">
+              <span>Phosphor Bronze</span>
+              <small>Warm, balanced</small>
+            </button>
+            <button type="button" class="material" data-material="bronze_80_20">
+              <span>80/20 Bronze</span>
+              <small>Bright, snappy</small>
+            </button>
+            <button type="button" class="material" data-material="nickel_bronze">
+              <span>Nickel Bronze</span>
+              <small>Clear fundamental</small>
+            </button>
+            <button type="button" class="material" data-material="silk_steel">
+              <span>Silk &amp; Steel</span>
+              <small>Softer feel</small>
+            </button>
+          </div>
+          <p class="material-note" id="material-note">For regular acoustic sets, bronze and nickel describe the wound strings.</p>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-head">
+            <span class="step">4</span>
+            <div>
               <h2>Feel</h2>
               <p>Choose how much resistance you want under your fingers.</p>
             </div>
@@ -143,8 +173,8 @@
         <div class="gauge-stack" id="gauge-stack"></div>
 
         <div class="answer-note">
-          <strong id="assumption-label">Currently estimating plain steel + nickel wound strings.</strong>
-          <span>Acoustic bronze, nylon, and per-string scale length support are coming.</span>
+          <strong id="assumption-label">Phosphor Bronze wound strings with plain steel trebles.</strong>
+          <span id="assumption-detail">Rows below A3 are treated as wound for now. Per-row plain/wound choice is coming.</span>
         </div>
       </aside>
     </section>
@@ -162,6 +192,13 @@
           <p>
             The calculator converts each note to frequency, uses scale length and string unit weight to estimate
             pounds of tension, then chooses the closest available gauge for the selected feel target.
+          </p>
+        </article>
+        <article>
+          <h2>Plain strings</h2>
+          <p>
+            For regular acoustic sets, the plain strings are steel. Bronze, nickel, and silk choices mostly change
+            the wound strings, which is where the tension and feel shift most.
           </p>
         </article>
         <article>

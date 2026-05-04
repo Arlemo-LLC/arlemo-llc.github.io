@@ -9,10 +9,14 @@ const addStringButton = document.querySelector('#add-string');
 const removeStringButton = document.querySelector('#remove-string');
 const totalTension = document.querySelector('#total-tension');
 const gaugeStack = document.querySelector('#gauge-stack');
+const materialNote = document.querySelector('#material-note');
+const assumptionLabel = document.querySelector('#assumption-label');
+const assumptionDetail = document.querySelector('#assumption-detail');
 
 let stringsCatalog = [];
 let tuningRows = ['G4', 'G2', 'D3', 'G3', 'B3', 'D4'];
 let targetTensionLbs = 18;
+let selectedWoundMaterial = 'phosphor_bronze';
 let audioContext = null;
 let activeOscillators = [];
 
@@ -20,6 +24,36 @@ const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const OCTAVES = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 const NOTE_PATTERN = /^([A-G][#b]?)(-?\d+)$/;
 const NOTATION_HELP = 'Use A-G plus an octave, with optional # or b: E2, F#3, Bb4. Pasted notes fill the rows from ceiling to floor.';
+const PLAIN_STRING_CUTOFF_HZ = 220; // A3 and above default to plain steel for acoustic sets.
+const MATERIALS = {
+  phosphor_bronze: {
+    label: 'Phosphor Bronze',
+    type: 'phosphor_bronze',
+    note: 'Warm, balanced acoustic wound strings.',
+  },
+  bronze_80_20: {
+    label: '80/20 Bronze',
+    type: 'bronze_80_20',
+    note: 'Brighter acoustic wound strings with a sharper attack.',
+  },
+  nickel_bronze: {
+    label: 'Nickel Bronze',
+    type: 'nickel_bronze',
+    note: 'Clearer wound strings with a stronger fundamental.',
+  },
+  silk_steel: {
+    label: 'Silk & Steel',
+    type: 'silk_steel',
+    note: 'Softer, lower-tension wound strings for a gentler feel.',
+  },
+};
+const TYPE_LABELS = {
+  plain_steel: 'plain steel',
+  phosphor_bronze: 'phosphor bronze',
+  bronze_80_20: '80/20 bronze',
+  nickel_bronze: 'nickel bronze',
+  silk_steel: 'silk & steel',
+};
 const SEMITONES_FROM_A4 = {
   C: -9, 'C#': -8, Db: -8, D: -7, 'D#': -6, Eb: -6,
   E: -5, F: -4, 'F#': -3, Gb: -3, G: -2, 'G#': -1, Ab: -1,
@@ -57,11 +91,12 @@ function formatGauge(gauge) {
 }
 
 function formatType(type) {
-  return type.replace('_', ' ');
+  return TYPE_LABELS[type] ?? type.replace('_', ' ');
 }
 
 function defaultType(frequencyHz) {
-  return frequencyHz >= 195 ? 'plain_steel' : 'nickel_wound';
+  const material = MATERIALS[selectedWoundMaterial];
+  return frequencyHz >= PLAIN_STRING_CUTOFF_HZ ? 'plain_steel' : material.type;
 }
 
 function parseTuningText(value) {
@@ -113,12 +148,19 @@ function recommendString({ note, scaleLengthInches }) {
     }
   }
 
-  if (!best) throw new Error(`No ${type} string found for ${note}`);
+  if (!best) throw new Error(`No ${formatType(type)} string found for ${note}`);
   return best;
 }
 
 function setActiveButton(selector, button) {
   document.querySelectorAll(selector).forEach(el => el.classList.toggle('is-active', el === button));
+}
+
+function syncMaterialCopy() {
+  const material = MATERIALS[selectedWoundMaterial];
+  materialNote.textContent = `${material.note} Plain strings stay steel.`;
+  assumptionLabel.textContent = `${material.label} wound strings with plain steel trebles.`;
+  assumptionDetail.textContent = 'A3 and above are treated as plain steel; lower rows are treated as wound. Per-row plain/wound choice is coming.';
 }
 
 function renderEditor() {
@@ -190,6 +232,7 @@ function syncPasteField() {
 }
 
 function updateAll() {
+  syncMaterialCopy();
   renderEditor();
   syncPasteField();
   try {
@@ -262,7 +305,7 @@ async function playNote(note, startOffset = 0, duration = 0.72) {
 }
 
 async function loadCatalog() {
-  const response = await fetch('data/daddario-singles.json');
+  const response = await fetch('data/daddario-acoustic-unit-weights.json');
   const data = await response.json();
   stringsCatalog = Object.entries(data.strings).map(([sku, entry]) => ({ sku, ...entry }));
 }
@@ -279,6 +322,14 @@ document.querySelectorAll('[data-target]').forEach(button => {
   button.addEventListener('click', () => {
     targetTensionLbs = Number(button.dataset.target);
     setActiveButton('[data-target]', button);
+    updateAll();
+  });
+});
+
+document.querySelectorAll('[data-material]').forEach(button => {
+  button.addEventListener('click', () => {
+    selectedWoundMaterial = button.dataset.material;
+    setActiveButton('[data-material]', button);
     updateAll();
   });
 });
