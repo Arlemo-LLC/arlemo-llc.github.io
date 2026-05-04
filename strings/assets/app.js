@@ -202,9 +202,18 @@ function updateAll() {
 
 function getAudioContext() {
   if (!audioContext) {
-    audioContext = new AudioContext();
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    audioContext = new AudioContextClass();
   }
   return audioContext;
+}
+
+async function unlockAudioContext() {
+  const ctx = getAudioContext();
+  if (ctx.state === 'suspended') {
+    await ctx.resume();
+  }
+  return ctx;
 }
 
 function stopSound() {
@@ -222,8 +231,8 @@ function stopSound() {
   activeOscillators = [];
 }
 
-function playNote(note, startOffset = 0, duration = 0.72) {
-  const ctx = getAudioContext();
+async function playNote(note, startOffset = 0, duration = 0.72) {
+  const ctx = await unlockAudioContext();
   const now = ctx.currentTime + startOffset;
   const frequency = noteToHz(note);
   const gain = ctx.createGain();
@@ -301,7 +310,7 @@ stringEditor.addEventListener('click', event => {
   const button = event.target.closest('.play-string');
   if (!button) return;
   stopSound();
-  playNote(button.dataset.note);
+  playNote(button.dataset.note).catch(() => {});
 });
 
 addStringButton.addEventListener('click', () => {
@@ -316,9 +325,12 @@ removeStringButton.addEventListener('click', () => {
   updateAll();
 });
 
-playAllButton.addEventListener('click', () => {
+playAllButton.addEventListener('click', async () => {
   stopSound();
-  tuningRows.forEach((note, index) => playNote(note, index * 0.44, 0.62));
+  await unlockAudioContext();
+  tuningRows.forEach((note, index) => {
+    playNote(note, index * 0.44, 0.62).catch(() => {});
+  });
 });
 
 muteButton.addEventListener('click', stopSound);
