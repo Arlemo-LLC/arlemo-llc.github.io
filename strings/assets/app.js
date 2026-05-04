@@ -17,6 +17,7 @@ let stringsCatalog = [];
 let tuningRows = ['G4', 'G2', 'D3', 'G3', 'B3', 'D4'];
 let targetTensionLbs = 18;
 let selectedWoundMaterial = 'phosphor_bronze';
+let gaugeOverrides = new Map();
 let audioContext = null;
 let activeOscillators = [];
 
@@ -99,6 +100,16 @@ function defaultType(frequencyHz) {
   return frequencyHz >= PLAIN_STRING_CUTOFF_HZ ? 'plain_steel' : material.type;
 }
 
+function getEntryBySku(sku) {
+  return stringsCatalog.find(entry => entry.sku === sku) ?? null;
+}
+
+function stringsForType(type) {
+  return stringsCatalog
+    .filter(entry => entry.type === type)
+    .sort((a, b) => a.gauge - b.gauge);
+}
+
 function parseTuningText(value) {
   return value
     .split(/[\s,]+/)
@@ -128,7 +139,22 @@ function setTuningHelp(message = NOTATION_HELP, isError = false) {
   tuningPaste.setAttribute('aria-invalid', String(isError));
 }
 
-function recommendString({ note, scaleLengthInches }) {
+function computeString(entry, { note, scaleLengthInches, frequencyHz, recommendedSku }) {
+  return {
+    ...entry,
+    note,
+    frequencyHz,
+    recommendedSku,
+    isOverride: entry.sku !== recommendedSku,
+    tension: tensionLbs({
+      unitWeightLbPerIn: entry.unitWeightLbPerIn,
+      scaleLengthInches,
+      frequencyHz,
+    }),
+  };
+}
+
+function recommendString({ note, scaleLengthInches, index }) {
   const frequencyHz = noteToHz(note);
   const type = defaultType(frequencyHz);
   let best = null;
@@ -149,7 +175,13 @@ function recommendString({ note, scaleLengthInches }) {
   }
 
   if (!best) throw new Error(`No ${formatType(type)} string found for ${note}`);
-  return best;
+  const override = getEntryBySku(gaugeOverrides.get(index));
+  if (override?.type === type) {
+    return computeString(override, { note, scaleLengthInches, frequencyHz, recommendedSku: best.sku });
+  }
+
+  gaugeOverrides.delete(index);
+  return { ...best, recommendedSku: best.sku, isOverride: false };
 }
 
 function setActiveButton(selector, button) {
@@ -160,7 +192,7 @@ function syncMaterialCopy() {
   const material = MATERIALS[selectedWoundMaterial];
   materialNote.textContent = `${material.note} Plain strings stay steel.`;
   assumptionLabel.textContent = `${material.label} wound strings with plain steel trebles.`;
-  assumptionDetail.textContent = 'A3 and above are treated as plain steel; lower rows are treated as wound. Per-row plain/wound choice is coming.';
+  assumptionDetail.textContent = 'A3 and above are treated as plain steel; lower rows are treated as wound. Change a gauge to see the tension math update.';
 }
 
 function renderEditor() {
@@ -201,16 +233,23 @@ function renderAnswer(results) {
     const card = document.createElement('article');
     card.className = 'gauge-card';
     const fillWidth = Math.max(10, Math.min(100, (row.tension / 24) * 100));
+    const gaugeOptions = stringsForType(row.type)
+      .map(entry => `<option value="${entry.sku}"${entry.sku === row.sku ? ' selected' : ''}>${formatGauge(entry.gauge)}</option>`)
+      .join('');
+    const gaugeState = row.isOverride ? `custom, recommended ${formatGauge(getEntryBySku(row.recommendedSku)?.gauge ?? row.gauge)}` : 'recommended';
     card.innerHTML = `
       <div class="gauge-main">
         <span class="string-number">${index + 1}</span>
         <strong>${row.note}</strong>
-        <span>${formatGauge(row.gauge)}</span>
+        <select class="gauge-select" data-index="${index}" aria-label="String ${index + 1} gauge">
+          ${gaugeOptions}
+        </select>
       </div>
       <div class="meter" aria-hidden="true"><span style="width:${fillWidth}%"></span></div>
       <div class="gauge-meta">
         <span>${row.tension.toFixed(1)} lb</span>
         <span>${formatType(row.type)}</span>
+        <span>${gaugeState}</span>
       </div>
     `;
     gaugeStack.append(card);
@@ -222,7 +261,7 @@ function calculate() {
   if (!Number.isFinite(scaleLengthInches) || scaleLengthInches <= 0) {
     throw new Error('Enter a valid scale length.');
   }
-  const results = tuningRows.map(note => recommendString({ note, scaleLengthInches }));
+  const results = tuningRows.map((note, index) => recommendString({ note, scaleLengthInches, index }));
   renderAnswer(results);
   return results;
 }
@@ -321,6 +360,7 @@ document.querySelectorAll('[data-scale-option]').forEach(button => {
 document.querySelectorAll('[data-target]').forEach(button => {
   button.addEventListener('click', () => {
     targetTensionLbs = Number(button.dataset.target);
+    gaugeOverrides.clear();
     setActiveButton('[data-target]', button);
     updateAll();
   });
@@ -329,6 +369,7 @@ document.querySelectorAll('[data-target]').forEach(button => {
 document.querySelectorAll('[data-material]').forEach(button => {
   button.addEventListener('click', () => {
     selectedWoundMaterial = button.dataset.material;
+    gaugeOverrides.clear();
     setActiveButton('[data-material]', button);
     updateAll();
   });
@@ -343,6 +384,7 @@ tuningPaste.addEventListener('change', () => {
     return;
   }
   tuningRows = validation.notes;
+  gaugeOverrides.clear();
   setTuningHelp();
   updateAll();
 });
@@ -364,6 +406,13 @@ stringEditor.addEventListener('click', event => {
   playNote(button.dataset.note).catch(() => {});
 });
 
+gaugeStack.addEventListener('change', event => {
+  const select = event.target.closest('.gauge-select');
+  if (!select) return;
+  gaugeOverrides.set(Number(select.dataset.index), select.value);
+  updateAll();
+});
+
 addStringButton.addEventListener('click', () => {
   if (tuningRows.length >= 12) return;
   tuningRows.push('E4');
@@ -373,6 +422,7 @@ addStringButton.addEventListener('click', () => {
 removeStringButton.addEventListener('click', () => {
   if (tuningRows.length <= 1) return;
   tuningRows.pop();
+  gaugeOverrides.delete(tuningRows.length);
   updateAll();
 });
 

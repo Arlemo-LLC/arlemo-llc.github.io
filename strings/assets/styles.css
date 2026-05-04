@@ -151,6 +151,10 @@ h2 {
   overflow: hidden;
 }
 
+.tuning-panel {
+  align-self: start;
+}
+
 .panel-section {
   display: grid;
   gap: 16px;
@@ -167,6 +171,12 @@ h2 {
   grid-template-columns: 34px minmax(0, 1fr);
   gap: 12px;
   align-items: start;
+}
+
+.panel-step-head {
+  flex: 1;
+  align-items: center;
+  min-width: 0;
 }
 
 .section-head p,
@@ -187,6 +197,12 @@ h2 {
   background: var(--green);
   font-weight: 780;
   font-variant-numeric: tabular-nums;
+}
+
+.optional-text {
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 680;
 }
 
 .scale-options,
@@ -486,6 +502,10 @@ summary:focus-visible {
   align-self: start;
 }
 
+.results-section {
+  display: grid;
+}
+
 .total-tension {
   margin: 0;
   color: var(--gold);
@@ -517,6 +537,11 @@ summary:focus-visible {
   gap: 10px;
 }
 
+.gauge-main {
+  display: grid;
+  grid-template-columns: 30px minmax(48px, 1fr) 94px;
+}
+
 .gauge-main strong {
   font-size: 1.15rem;
 }
@@ -524,6 +549,14 @@ summary:focus-visible {
 .gauge-main span:last-child {
   color: var(--green-dark);
   font-size: 1.08rem;
+  font-weight: 780;
+  font-variant-numeric: tabular-nums;
+}
+
+.gauge-select {
+  min-height: 36px;
+  padding: 0 8px;
+  color: var(--green-dark);
   font-weight: 780;
   font-variant-numeric: tabular-nums;
 }
@@ -543,9 +576,19 @@ summary:focus-visible {
 }
 
 .gauge-meta {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   color: var(--muted);
   font-size: 0.88rem;
   font-variant-numeric: tabular-nums;
+}
+
+.gauge-meta span:first-child {
+  white-space: nowrap;
+}
+
+.gauge-meta span:last-child {
+  text-align: right;
 }
 
 .answer-note {
@@ -630,6 +673,16 @@ article p,
 
   .gauge-stack {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 761px) {
+  .answer-panel .material-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .answer-panel .feel-options {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 

@@ -86,10 +86,44 @@
             <button type="button" class="stepper-button" id="add-string" aria-label="Add string">+</button>
           </div>
         </section>
+      </form>
 
+      <section class="tuning-panel">
+        <div class="panel-title-row">
+          <div class="section-head panel-step-head">
+            <span class="step">3</span>
+            <div>
+              <p class="eyebrow">Desired tuning</p>
+              <h2>Pick notes and octaves</h2>
+            </div>
+          </div>
+          <div class="panel-actions">
+            <button type="button" class="secondary" id="play-all">Play all</button>
+            <button type="button" class="icon-button" id="mute-button" aria-label="Stop sound">■</button>
+          </div>
+        </div>
+
+        <label class="paste-line">
+          <span>Paste tuning</span>
+          <input id="tuning-paste" value="G4 G2 D3 G3 B3 D4" autocomplete="off" spellcheck="false" aria-describedby="tuning-help">
+        </label>
+        <p class="notation-help" id="tuning-help">Use A-G plus an octave, with optional # or b: E2, F#3, Bb4. Pasted notes fill the rows from ceiling to floor.</p>
+
+        <div class="orientation-label" aria-hidden="true">
+          <span>Ceiling</span>
+          <span>top row</span>
+        </div>
+        <div class="string-editor" id="string-editor" aria-label="String tuning rows"></div>
+        <div class="orientation-label floor-label" aria-hidden="true">
+          <span>Floor</span>
+          <span>bottom row</span>
+        </div>
+      </section>
+
+      <aside class="answer-panel" aria-live="polite">
         <section class="panel-section">
           <div class="section-head">
-            <span class="step">3</span>
+            <span class="step">4</span>
             <div>
               <h2>Wound material</h2>
               <p>Plain strings stay steel. This changes the wound strings.</p>
@@ -118,10 +152,10 @@
 
         <section class="panel-section">
           <div class="section-head">
-            <span class="step">4</span>
+            <span class="step">5</span>
             <div>
-              <h2>Feel</h2>
-              <p>Choose how much resistance you want under your fingers.</p>
+              <h2>Feel <span class="optional-text">optional</span></h2>
+              <p>Set a target before you fine-tune individual gauges.</p>
             </div>
           </div>
           <div class="feel-options" role="group" aria-label="Target feel">
@@ -130,52 +164,26 @@
             <button type="button" class="feel is-active" data-target="18">Firm</button>
           </div>
         </section>
-      </form>
 
-      <section class="tuning-panel">
-        <div class="panel-title-row">
-          <div>
-            <p class="eyebrow">Tuning</p>
-            <h2>Pick notes and octaves</h2>
+        <section class="results-section">
+          <div class="panel-title-row">
+            <div class="section-head panel-step-head">
+              <span class="step">6</span>
+              <div>
+                <p class="eyebrow">Recommended gauges</p>
+                <h2>Adjust and compare</h2>
+              </div>
+            </div>
+            <p class="total-tension" id="total-tension">-</p>
           </div>
-          <div class="panel-actions">
-            <button type="button" class="secondary" id="play-all">Play all</button>
-            <button type="button" class="icon-button" id="mute-button" aria-label="Stop sound">■</button>
+
+          <div class="gauge-stack" id="gauge-stack"></div>
+
+          <div class="answer-note">
+            <strong id="assumption-label">Phosphor Bronze wound strings with plain steel trebles.</strong>
+            <span id="assumption-detail">Change a gauge to see the tension math update.</span>
           </div>
-        </div>
-
-        <label class="paste-line">
-          <span>Paste tuning</span>
-          <input id="tuning-paste" value="G4 G2 D3 G3 B3 D4" autocomplete="off" spellcheck="false" aria-describedby="tuning-help">
-        </label>
-        <p class="notation-help" id="tuning-help">Use A-G plus an octave, with optional # or b: E2, F#3, Bb4. Pasted notes fill the rows from ceiling to floor.</p>
-
-        <div class="orientation-label" aria-hidden="true">
-          <span>Ceiling</span>
-          <span>top row</span>
-        </div>
-        <div class="string-editor" id="string-editor" aria-label="String tuning rows"></div>
-        <div class="orientation-label floor-label" aria-hidden="true">
-          <span>Floor</span>
-          <span>bottom row</span>
-        </div>
-      </section>
-
-      <aside class="answer-panel" aria-live="polite">
-        <div class="panel-title-row">
-          <div>
-            <p class="eyebrow">Answer</p>
-            <h2>Estimated gauges</h2>
-          </div>
-          <p class="total-tension" id="total-tension">-</p>
-        </div>
-
-        <div class="gauge-stack" id="gauge-stack"></div>
-
-        <div class="answer-note">
-          <strong id="assumption-label">Phosphor Bronze wound strings with plain steel trebles.</strong>
-          <span id="assumption-detail">Rows below A3 are treated as wound for now. Per-row plain/wound choice is coming.</span>
-        </div>
+        </section>
       </aside>
     </section>
 
@@ -191,7 +199,8 @@
           <h2>How it works</h2>
           <p>
             The calculator converts each note to frequency, uses scale length and string unit weight to estimate
-            pounds of tension, then chooses the closest available gauge for the selected feel target.
+            pounds of tension, then chooses the closest available gauge for the selected material and feel target.
+            Change a gauge and the tension updates.
           </p>
         </article>
         <article>
