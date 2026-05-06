@@ -21,7 +21,7 @@
     }
 
     .container {
-      max-width: 540px;
+      max-width: 640px;
       text-align: center;
     }
 
@@ -36,7 +36,15 @@
       font-size: 1.15rem;
       color: #555;
       line-height: 1.6;
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .summary {
+      font-size: 1rem;
+      color: #666;
+      line-height: 1.7;
+      margin: 0 auto 2rem;
+      max-width: 560px;
     }
 
     .contact {
@@ -45,14 +53,36 @@
     }
 
     .links {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 1.5rem;
+      display: grid;
+      gap: 0.75rem;
+      margin: 1.5rem auto 2rem;
+      text-align: left;
+      max-width: 460px;
+    }
+
+    .product {
+      border: 1px solid #e0e0e0;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+    }
+
+    .product a {
+      color: #1a1a1a;
+      font-weight: 600;
+      text-decoration: none;
+      border-bottom: 1px solid #bdbdbd;
+    }
+
+    .product p {
+      color: #666;
+      line-height: 1.5;
+      margin-top: 0.45rem;
       font-size: 0.95rem;
     }
 
-    .contact a {
+    .contact a,
+    .product a:hover {
       color: #555;
       text-decoration: none;
       border-bottom: 1px solid #ccc;
@@ -68,9 +98,18 @@
   <div class="container">
     <h1>Arlemo</h1>
     <p class="tagline">A software company.</p>
+    <p class="summary">Arlemo LLC builds and operates small software products focused on practical tools, lightweight workflows, and thoughtful user experiences.</p>
     <div class="links">
-      <a href="/strings/">Strings</a>
+      <div class="product">
+        <a href="https://rifflist.app/">RiffList</a>
+        <p>A private list app for small groups, built for sharing recommendations without turning them into another social feed.</p>
+      </div>
+      <div class="product">
+        <a href="/strings/">Strings</a>
+        <p>A guitar string reference tool for comparing string sets, gauges, and unit weights.</p>
+      </div>
     </div>
+    <p class="contact">Contact: <a href="mailto:jeff@arlemo.com">jeff@arlemo.com</a></p>
 
   </div>
 </body>
