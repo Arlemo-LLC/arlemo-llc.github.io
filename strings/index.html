@@ -119,15 +119,6 @@
             <button type="button" class="preset" data-preset="banjified_double_c">Banjified Double C</button>
           </div>
         </div>
-        <div class="shift-row" aria-label="Move all strings by half steps">
-          <span>Move tuning</span>
-          <div class="shift-controls">
-            <button type="button" class="shift-button" id="shift-down" aria-label="Move every string down one half step">- Half step</button>
-            <output id="shift-amount">0 half steps</output>
-            <button type="button" class="shift-button" id="shift-up" aria-label="Move every string up one half step">+ Half step</button>
-            <button type="button" class="shift-reset" id="shift-reset">Reset</button>
-          </div>
-        </div>
         <p class="notation-help" id="tuning-help">Use A-G plus an octave, with optional # or b: E2, F#3, Bb4. Pasted notes fill the rows from ceiling to floor.</p>
 
         <div class="orientation-label" aria-hidden="true">
@@ -138,6 +129,15 @@
         <div class="orientation-label floor-label" aria-hidden="true">
           <span>Floor</span>
           <span>bottom row</span>
+        </div>
+        <div class="shift-row" aria-label="Shift all notes by half steps">
+          <span>Shift all notes</span>
+          <div class="shift-controls">
+            <button type="button" class="shift-button" id="shift-down" aria-label="Shift every string down one half step">Down</button>
+            <output id="shift-amount">0 half steps</output>
+            <button type="button" class="shift-button" id="shift-up" aria-label="Shift every string up one half step">Up</button>
+            <button type="button" class="shift-reset" id="shift-reset">Reset</button>
+          </div>
         </div>
       </section>
 

@@ -490,8 +490,8 @@ summary:focus-visible {
 }
 
 .shift-controls {
-  display: grid;
-  grid-template-columns: auto minmax(92px, auto) auto auto;
+  display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   align-items: center;
 }
@@ -501,8 +501,17 @@ summary:focus-visible {
   white-space: nowrap;
 }
 
+.shift-button {
+  flex: 1 1 72px;
+}
+
+.shift-reset {
+  flex: 0 0 auto;
+}
+
 .shift-controls output {
   display: grid;
+  flex: 0 0 auto;
   place-items: center;
   min-height: 34px;
   padding: 0 10px;
@@ -551,7 +560,7 @@ summary:focus-visible {
 }
 
 .floor-label {
-  padding: 0 18px 16px;
+  padding: 0 18px 8px;
 }
 
 .string-editor {
@@ -920,11 +929,11 @@ article p,
   }
 
   .shift-controls {
-    grid-template-columns: 1fr 1fr;
+    display: flex;
   }
 
   .shift-controls output {
-    grid-column: 1 / -1;
+    flex-basis: 100%;
     order: -1;
   }
 
