@@ -87,7 +87,7 @@ nav a:hover {
 }
 
 .hero-band {
-  padding: 42px 24px 18px;
+  padding: 30px 24px 12px;
 }
 
 .hero-copy {
@@ -113,7 +113,7 @@ h2 {
 
 h1 {
   max-width: 920px;
-  font-size: clamp(2.25rem, 6vw, 5rem);
+  font-size: clamp(2.1rem, 4.8vw, 4rem);
 }
 
 h2 {
@@ -440,6 +440,49 @@ summary:focus-visible {
   padding: 16px 18px 8px;
 }
 
+.preset-row {
+  display: grid;
+  grid-template-columns: 98px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 0 18px 12px;
+}
+
+.preset-row > span {
+  padding-top: 8px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 760;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.preset-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.preset {
+  min-height: 34px;
+  padding: 0 11px;
+  border: 1px solid #cbd3c6;
+  border-radius: 999px;
+  color: var(--green-dark);
+  background: #fff;
+  font-size: 0.88rem;
+}
+
+.preset:hover {
+  background: #f0f4ed;
+}
+
+.preset.is-active {
+  border-color: var(--green);
+  color: #fff;
+  background: var(--green);
+}
+
 .notation-help {
   margin: 0;
   padding: 0 18px 16px 128px;
@@ -518,6 +561,85 @@ summary:focus-visible {
   display: grid;
   gap: 10px;
   padding: 18px;
+}
+
+.shopping-panel {
+  display: grid;
+  gap: 12px;
+  margin: 0 18px 18px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #f5f7f1;
+}
+
+.shopping-summary {
+  display: grid;
+  gap: 5px;
+}
+
+.shopping-summary .eyebrow {
+  margin-bottom: 0;
+}
+
+.shopping-summary strong {
+  font-size: 1.12rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.shopping-summary span,
+.shopping-note,
+.shopping-actions span {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.shopping-summary span {
+  overflow-wrap: anywhere;
+}
+
+.shopping-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.shopping-actions .secondary {
+  min-height: 36px;
+}
+
+.shopping-actions span {
+  color: var(--green-dark);
+  font-weight: 720;
+}
+
+.shopping-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.shopping-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px solid #cbd3c6;
+  border-radius: 999px;
+  color: var(--green-dark);
+  background: #fff;
+  font-size: 0.86rem;
+  font-weight: 760;
+  text-decoration: none;
+}
+
+.shopping-links a:hover {
+  background: #f0f4ed;
+}
+
+.shopping-note {
+  margin: 0;
 }
 
 .gauge-card {
@@ -748,6 +870,14 @@ article p,
 
   .paste-line {
     grid-template-columns: 1fr;
+  }
+
+  .preset-row {
+    grid-template-columns: 1fr;
+  }
+
+  .preset-row > span {
+    padding-top: 0;
   }
 
   .notation-help {

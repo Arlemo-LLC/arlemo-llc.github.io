@@ -9,15 +9,22 @@ const addStringButton = document.querySelector('#add-string');
 const removeStringButton = document.querySelector('#remove-string');
 const totalTension = document.querySelector('#total-tension');
 const gaugeStack = document.querySelector('#gauge-stack');
+const gaugeSummary = document.querySelector('#gauge-summary');
+const skuSummary = document.querySelector('#sku-summary');
+const copyListButton = document.querySelector('#copy-list');
+const copyStatus = document.querySelector('#copy-status');
+const shoppingLinks = document.querySelector('#shopping-links');
 const materialNote = document.querySelector('#material-note');
 const assumptionLabel = document.querySelector('#assumption-label');
 const assumptionDetail = document.querySelector('#assumption-detail');
 
 let stringsCatalog = [];
 let tuningRows = ['E2', 'A2', 'D3', 'G3', 'B3', 'E4'];
-let targetTensionLbs = 18;
+let activePresetId = 'standard';
+let targetTensionLbs = 22;
 let selectedWoundMaterial = 'phosphor_bronze';
 let gaugeOverrides = new Map();
+let latestResults = [];
 let audioContext = null;
 let activeOscillators = [];
 
@@ -26,6 +33,29 @@ const OCTAVES = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 const NOTE_PATTERN = /^([A-G][#b]?)(-?\d+)$/;
 const NOTATION_HELP = 'Use A-G plus an octave, with optional # or b: E2, F#3, Bb4. Pasted notes fill the rows from ceiling to floor.';
 const PLAIN_STRING_CUTOFF_HZ = 220; // A3 and above default to plain steel for acoustic sets.
+const AMAZON_ASSOCIATE_TAG = 'arlemo-20';
+const TUNING_PRESETS = {
+  standard: {
+    label: 'Standard',
+    notes: ['E2', 'A2', 'D3', 'G3', 'B3', 'E4'],
+  },
+  drop_d: {
+    label: 'Drop D',
+    notes: ['D2', 'A2', 'D3', 'G3', 'B3', 'E4'],
+  },
+  dadgad: {
+    label: 'DADGAD',
+    notes: ['D2', 'A2', 'D3', 'G3', 'A3', 'D4'],
+  },
+  open_g: {
+    label: 'Open G',
+    notes: ['D2', 'G2', 'D3', 'G3', 'B3', 'D4'],
+  },
+  high_g_open_g: {
+    label: 'High-G Open G',
+    notes: ['G4', 'G2', 'D3', 'G3', 'B3', 'D4'],
+  },
+};
 const MATERIALS = {
   phosphor_bronze: {
     label: 'Phosphor Bronze',
@@ -93,6 +123,11 @@ function formatGauge(gauge) {
 
 function formatType(type) {
   return TYPE_LABELS[type] ?? type.replace('_', ' ');
+}
+
+function amazonSearchUrl(row) {
+  const query = `D'Addario ${row.sku} ${formatGauge(row.gauge)} ${formatType(row.type)} single string`;
+  return `https://www.amazon.com/s?k=${encodeURIComponent(query)}&tag=${encodeURIComponent(AMAZON_ASSOCIATE_TAG)}`;
 }
 
 function defaultType(frequencyHz) {
@@ -188,11 +223,56 @@ function setActiveButton(selector, button) {
   document.querySelectorAll(selector).forEach(el => el.classList.toggle('is-active', el === button));
 }
 
+function syncPresetButtons() {
+  document.querySelectorAll('[data-preset]').forEach(button => {
+    button.classList.toggle('is-active', button.dataset.preset === activePresetId);
+  });
+}
+
+function syncScaleButtons() {
+  const value = scaleInput.value.trim();
+  document.querySelectorAll('[data-scale-option]').forEach(button => {
+    button.classList.toggle('is-active', button.dataset.scaleOption === value);
+  });
+}
+
 function syncMaterialCopy() {
   const material = MATERIALS[selectedWoundMaterial];
   materialNote.textContent = `${material.note} Only wound rows use this material; plain rows stay steel.`;
   assumptionLabel.textContent = `${material.label} where the row is wound; plain steel where the row is plain.`;
   assumptionDetail.textContent = 'Rows labeled plain steel are not affected by the material picker. Change a gauge to see the tension math update.';
+}
+
+function formatShoppingList(results) {
+  const scaleLengthInches = Number(scaleInput.value);
+  const preset = activePresetId ? TUNING_PRESETS[activePresetId]?.label : null;
+  const header = [
+    'Strings by Arlemo recommendation',
+    `Scale: ${Number.isFinite(scaleLengthInches) ? `${scaleLengthInches}"` : scaleInput.value}`,
+    `Tuning: ${tuningRows.join(' ')}${preset ? ` (${preset})` : ''}`,
+    `Material: ${MATERIALS[selectedWoundMaterial].label} for wound rows`,
+    `Total tension: ${results.reduce((sum, row) => sum + row.tension, 0).toFixed(1)} lb`,
+  ];
+  const rows = results.map((row, index) => (
+    `${index + 1}. ${row.note} ${formatGauge(row.gauge)} ${row.sku} ${formatType(row.type)} ${row.tension.toFixed(1)} lb`
+  ));
+  return [...header, '', ...rows].join('\n');
+}
+
+function renderShoppingList(results) {
+  gaugeSummary.textContent = results.map(row => formatGauge(row.gauge)).join(' ');
+  skuSummary.textContent = results.map(row => row.sku).join('  ');
+  copyStatus.textContent = '';
+  shoppingLinks.replaceChildren();
+
+  results.forEach((row, index) => {
+    const link = document.createElement('a');
+    link.href = amazonSearchUrl(row);
+    link.target = '_blank';
+    link.rel = 'sponsored noopener';
+    link.textContent = `${index + 1} ${row.sku}`;
+    shoppingLinks.append(link);
+  });
 }
 
 function renderEditor() {
@@ -225,9 +305,11 @@ function renderEditor() {
 }
 
 function renderAnswer(results) {
+  latestResults = results;
   gaugeStack.replaceChildren();
   const total = results.reduce((sum, row) => sum + row.tension, 0);
   totalTension.textContent = `${total.toFixed(1)} lb`;
+  renderShoppingList(results);
 
   results.forEach((row, index) => {
     const card = document.createElement('article');
@@ -274,6 +356,8 @@ function syncPasteField() {
 }
 
 function updateAll() {
+  syncScaleButtons();
+  syncPresetButtons();
   syncMaterialCopy();
   renderEditor();
   syncPasteField();
@@ -355,7 +439,18 @@ async function loadCatalog() {
 document.querySelectorAll('[data-scale-option]').forEach(button => {
   button.addEventListener('click', () => {
     scaleInput.value = button.dataset.scaleOption;
-    setActiveButton('[data-scale-option]', button);
+    updateAll();
+  });
+});
+
+document.querySelectorAll('[data-preset]').forEach(button => {
+  button.addEventListener('click', () => {
+    const preset = TUNING_PRESETS[button.dataset.preset];
+    if (!preset) return;
+    activePresetId = button.dataset.preset;
+    tuningRows = [...preset.notes];
+    gaugeOverrides.clear();
+    setTuningHelp();
     updateAll();
   });
 });
@@ -387,6 +482,7 @@ tuningPaste.addEventListener('change', () => {
     return;
   }
   tuningRows = validation.notes;
+  activePresetId = null;
   gaugeOverrides.clear();
   setTuningHelp();
   updateAll();
@@ -399,6 +495,7 @@ stringEditor.addEventListener('change', event => {
   const name = row.querySelector('.note-select').value;
   const octave = row.querySelector('.octave-select').value;
   tuningRows[index] = buildNote(name, octave);
+  activePresetId = null;
   updateAll();
 });
 
@@ -419,14 +516,27 @@ gaugeStack.addEventListener('change', event => {
 addStringButton.addEventListener('click', () => {
   if (tuningRows.length >= 12) return;
   tuningRows.push('E4');
+  activePresetId = null;
   updateAll();
 });
 
 removeStringButton.addEventListener('click', () => {
   if (tuningRows.length <= 1) return;
   tuningRows.pop();
+  activePresetId = null;
   gaugeOverrides.delete(tuningRows.length);
   updateAll();
+});
+
+copyListButton.addEventListener('click', async () => {
+  if (!latestResults.length) return;
+  const text = formatShoppingList(latestResults);
+  try {
+    await navigator.clipboard.writeText(text);
+    copyStatus.textContent = 'Copied';
+  } catch {
+    copyStatus.textContent = 'Copy unavailable';
+  }
 });
 
 playAllButton.addEventListener('click', async () => {

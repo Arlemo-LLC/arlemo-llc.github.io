@@ -107,6 +107,16 @@
           <span>Paste tuning</span>
           <input id="tuning-paste" value="E2 A2 D3 G3 B3 E4" autocomplete="off" spellcheck="false" aria-describedby="tuning-help">
         </label>
+        <div class="preset-row" role="group" aria-label="Common tuning presets">
+          <span>Quick starts</span>
+          <div class="preset-options">
+            <button type="button" class="preset is-active" data-preset="standard">Standard</button>
+            <button type="button" class="preset" data-preset="drop_d">Drop D</button>
+            <button type="button" class="preset" data-preset="dadgad">DADGAD</button>
+            <button type="button" class="preset" data-preset="open_g">Open G</button>
+            <button type="button" class="preset" data-preset="high_g_open_g">High-G Open G</button>
+          </div>
+        </div>
         <p class="notation-help" id="tuning-help">Use A-G plus an octave, with optional # or b: E2, F#3, Bb4. Pasted notes fill the rows from ceiling to floor.</p>
 
         <div class="orientation-label" aria-hidden="true">
@@ -159,9 +169,9 @@
             </div>
           </div>
           <div class="feel-options" role="group" aria-label="Target feel">
-            <button type="button" class="feel" data-target="14">Light</button>
-            <button type="button" class="feel" data-target="16">Balanced</button>
-            <button type="button" class="feel is-active" data-target="18">Firm</button>
+            <button type="button" class="feel" data-target="18">Light</button>
+            <button type="button" class="feel is-active" data-target="22">Balanced</button>
+            <button type="button" class="feel" data-target="26">Firm</button>
           </div>
         </section>
 
@@ -178,6 +188,22 @@
           </div>
 
           <div class="gauge-stack" id="gauge-stack"></div>
+
+          <div class="shopping-panel">
+            <div class="shopping-summary">
+              <p class="eyebrow">Shopping list</p>
+              <strong id="gauge-summary">-</strong>
+              <span id="sku-summary">-</span>
+            </div>
+            <div class="shopping-actions">
+              <button type="button" class="secondary" id="copy-list">Copy list</button>
+              <span id="copy-status" role="status" aria-live="polite"></span>
+            </div>
+            <div class="shopping-links" id="shopping-links" aria-label="Amazon SKU searches"></div>
+            <p class="shopping-note">
+              Amazon links search by D'Addario SKU with the Arlemo associate tag. Product IDs are not treated as verified yet.
+            </p>
+          </div>
 
           <div class="answer-note">
             <strong id="assumption-label">Phosphor Bronze wound strings with plain steel trebles.</strong>
@@ -213,8 +239,8 @@
         <article>
           <h2>Buying links</h2>
           <p>
-            The buying flow will favor close stock sets first and custom singles when the tuning needs them. We
-            verify product IDs before turning on direct cart links.
+            The calculator can copy a SKU list and open Amazon searches now. Direct cart links wait until product
+            IDs are verified.
           </p>
         </article>
       </div>
