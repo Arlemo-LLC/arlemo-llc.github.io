@@ -3,6 +3,10 @@ const stringCountOutput = document.querySelector('#string-count');
 const stringEditor = document.querySelector('#string-editor');
 const tuningPaste = document.querySelector('#tuning-paste');
 const tuningHelp = document.querySelector('#tuning-help');
+const shiftDownButton = document.querySelector('#shift-down');
+const shiftUpButton = document.querySelector('#shift-up');
+const shiftResetButton = document.querySelector('#shift-reset');
+const shiftAmountOutput = document.querySelector('#shift-amount');
 const playAllButton = document.querySelector('#play-all');
 const muteButton = document.querySelector('#mute-button');
 const addStringButton = document.querySelector('#add-string');
@@ -20,7 +24,9 @@ const assumptionDetail = document.querySelector('#assumption-detail');
 
 let stringsCatalog = [];
 let tuningRows = ['E2', 'A2', 'D3', 'G3', 'B3', 'E4'];
+let baseTuningRows = [...tuningRows];
 let activePresetId = 'standard';
+let tuningShiftSemitones = 0;
 let targetTensionLbs = 22;
 let selectedWoundMaterial = 'phosphor_bronze';
 let gaugeOverrides = new Map();
@@ -51,9 +57,17 @@ const TUNING_PRESETS = {
     label: 'Open G',
     notes: ['D2', 'G2', 'D3', 'G3', 'B3', 'D4'],
   },
+  open_d: {
+    label: 'Open D',
+    notes: ['D2', 'A2', 'D3', 'F#3', 'A3', 'D4'],
+  },
   high_g_open_g: {
     label: 'Banjified Open G',
     notes: ['G4', 'G2', 'D3', 'G3', 'B3', 'D4'],
+  },
+  banjified_double_c: {
+    label: 'Banjified Double C',
+    notes: ['G4', 'G2', 'C3', 'G3', 'C4', 'D4'],
   },
 };
 const MATERIALS = {
@@ -111,6 +125,17 @@ function parseNote(note) {
 
 function buildNote(name, octave) {
   return `${name}${octave}`;
+}
+
+function transposeNote(note, semitones) {
+  const parsed = parseNote(note);
+  if (!parsed) return null;
+  const noteIndex = NOTES.indexOf(parsed.name);
+  const nextIndex = parsed.octave * 12 + noteIndex + semitones;
+  const nextOctave = Math.floor(nextIndex / 12);
+  const nextName = NOTES[((nextIndex % 12) + 12) % 12];
+  if (!OCTAVES.includes(nextOctave)) return null;
+  return buildNote(nextName, nextOctave);
 }
 
 function tensionLbs({ unitWeightLbPerIn, scaleLengthInches, frequencyHz }) {
@@ -225,7 +250,8 @@ function setActiveButton(selector, button) {
 
 function syncPresetButtons() {
   document.querySelectorAll('[data-preset]').forEach(button => {
-    button.classList.toggle('is-active', button.dataset.preset === activePresetId);
+    const isActive = tuningShiftSemitones === 0 && button.dataset.preset === activePresetId;
+    button.classList.toggle('is-active', isActive);
   });
 }
 
@@ -243,13 +269,45 @@ function syncMaterialCopy() {
   assumptionDetail.textContent = 'Rows labeled plain steel are not affected by the material picker. Change a gauge to see the tension math update.';
 }
 
+function formatShiftAmount() {
+  if (tuningShiftSemitones === 0) return '0 half steps';
+  const absolute = Math.abs(tuningShiftSemitones);
+  const unit = absolute === 1 ? 'half step' : 'half steps';
+  return `${tuningShiftSemitones > 0 ? '+' : '-'}${absolute} ${unit}`;
+}
+
+function syncShiftControls() {
+  shiftAmountOutput.textContent = formatShiftAmount();
+  shiftResetButton.disabled = tuningShiftSemitones === 0;
+}
+
+function setBaseTuning(notes) {
+  baseTuningRows = [...notes];
+  tuningShiftSemitones = 0;
+}
+
+function applyTuningShift(delta) {
+  const nextShift = tuningShiftSemitones + delta;
+  const shifted = baseTuningRows.map(note => transposeNote(note, nextShift));
+  if (shifted.some(note => !note)) {
+    setTuningHelp('That move would push a note outside the supported octave range. Current tuning was not changed.', true);
+    return;
+  }
+  tuningShiftSemitones = nextShift;
+  tuningRows = shifted;
+  gaugeOverrides.clear();
+  setTuningHelp();
+  updateAll();
+}
+
 function formatShoppingList(results) {
   const scaleLengthInches = Number(scaleInput.value);
   const preset = activePresetId ? TUNING_PRESETS[activePresetId]?.label : null;
+  const moved = tuningShiftSemitones === 0 ? '' : `, moved ${formatShiftAmount()}`;
   const header = [
     'Strings by Arlemo recommendation',
     `Scale: ${Number.isFinite(scaleLengthInches) ? `${scaleLengthInches}"` : scaleInput.value}`,
-    `Tuning: ${tuningRows.join(' ')}${preset ? ` (${preset})` : ''}`,
+    `Tuning: ${tuningRows.join(' ')}${preset ? ` (${preset}${moved})` : ''}`,
     `Material: ${MATERIALS[selectedWoundMaterial].label} for wound rows`,
     `Total tension: ${results.reduce((sum, row) => sum + row.tension, 0).toFixed(1)} lb`,
   ];
@@ -358,6 +416,7 @@ function syncPasteField() {
 function updateAll() {
   syncScaleButtons();
   syncPresetButtons();
+  syncShiftControls();
   syncMaterialCopy();
   renderEditor();
   syncPasteField();
@@ -449,6 +508,7 @@ document.querySelectorAll('[data-preset]').forEach(button => {
     if (!preset) return;
     activePresetId = button.dataset.preset;
     tuningRows = [...preset.notes];
+    setBaseTuning(tuningRows);
     gaugeOverrides.clear();
     setTuningHelp();
     updateAll();
@@ -482,6 +542,7 @@ tuningPaste.addEventListener('change', () => {
     return;
   }
   tuningRows = validation.notes;
+  setBaseTuning(tuningRows);
   activePresetId = null;
   gaugeOverrides.clear();
   setTuningHelp();
@@ -495,6 +556,7 @@ stringEditor.addEventListener('change', event => {
   const name = row.querySelector('.note-select').value;
   const octave = row.querySelector('.octave-select').value;
   tuningRows[index] = buildNote(name, octave);
+  setBaseTuning(tuningRows);
   activePresetId = null;
   updateAll();
 });
@@ -516,6 +578,7 @@ gaugeStack.addEventListener('change', event => {
 addStringButton.addEventListener('click', () => {
   if (tuningRows.length >= 12) return;
   tuningRows.push('E4');
+  setBaseTuning(tuningRows);
   activePresetId = null;
   updateAll();
 });
@@ -523,8 +586,20 @@ addStringButton.addEventListener('click', () => {
 removeStringButton.addEventListener('click', () => {
   if (tuningRows.length <= 1) return;
   tuningRows.pop();
+  setBaseTuning(tuningRows);
   activePresetId = null;
   gaugeOverrides.delete(tuningRows.length);
+  updateAll();
+});
+
+shiftDownButton.addEventListener('click', () => applyTuningShift(-1));
+shiftUpButton.addEventListener('click', () => applyTuningShift(1));
+
+shiftResetButton.addEventListener('click', () => {
+  tuningRows = [...baseTuningRows];
+  tuningShiftSemitones = 0;
+  gaugeOverrides.clear();
+  setTuningHelp();
   updateAll();
 });
 
