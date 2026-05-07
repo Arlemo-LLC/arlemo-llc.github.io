@@ -52,7 +52,7 @@ const TUNING_PRESETS = {
     notes: ['D2', 'G2', 'D3', 'G3', 'B3', 'D4'],
   },
   high_g_open_g: {
-    label: 'High-G Open G',
+    label: 'Banjified Open G',
     notes: ['G4', 'G2', 'D3', 'G3', 'B3', 'D4'],
   },
 };
