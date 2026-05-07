@@ -147,7 +147,7 @@
             <span class="step">4</span>
             <div>
               <h2>Material</h2>
-              <p>Choose the D'Addario acoustic family. Plain rows stay steel; wound rows use this material.</p>
+              <p>Choose the D'Addario acoustic family. Electric and other catalogs are coming.</p>
             </div>
           </div>
           <div class="material-options" role="group" aria-label="String material">
@@ -169,21 +169,35 @@
             </button>
           </div>
           <p class="material-note" id="material-note">This setting changes wound rows only. Plain rows stay steel.</p>
+          <div class="line-row">
+            <span>String life</span>
+            <div class="line-options" role="group" aria-label="String life">
+              <button type="button" class="line-button is-active" data-line="standard">Standard</button>
+              <button type="button" class="line-button" data-line="xt">XT</button>
+              <button type="button" class="line-button" data-line="xs">XS</button>
+            </div>
+          </div>
+          <p class="line-note" id="line-note">Standard changes the recommendation least; XT and XS are longer-life options where D'Addario offers them.</p>
         </section>
 
         <section class="panel-section">
           <div class="section-head">
             <span class="step">5</span>
             <div>
-              <h2>Feel <span class="optional-text">optional</span></h2>
-              <p>Set a target before you fine-tune individual gauges.</p>
+              <h2>Target tension</h2>
+              <p>Used to pick gauges. You can still override any string.</p>
             </div>
           </div>
-          <div class="feel-options" role="group" aria-label="Target feel">
-            <button type="button" class="feel" data-target="18">Light</button>
-            <button type="button" class="feel is-active" data-target="22">Balanced</button>
-            <button type="button" class="feel" data-target="26">Firm</button>
+          <div class="target-options" role="group" aria-label="Target tension">
+            <button type="button" class="target-button" data-target="18" data-target-label="Lower">Lower</button>
+            <button type="button" class="target-button is-active" data-target="22" data-target-label="Average">Average</button>
+            <button type="button" class="target-button" data-target="26" data-target-label="High">High</button>
           </div>
+          <label class="target-custom">
+            <span>Custom</span>
+            <input id="custom-target" inputmode="decimal" value="22" aria-label="Custom target tension in pounds">
+            <span>lb per string</span>
+          </label>
         </section>
 
         <section class="results-section">
@@ -196,6 +210,17 @@
               </div>
             </div>
             <p class="total-tension" id="total-tension">-</p>
+          </div>
+
+          <div class="recommendation-toolbar">
+            <div class="recommendation-summary">
+              <strong id="recommendation-state">Recommended starting set</strong>
+              <span id="tension-range">-</span>
+            </div>
+            <div class="recommendation-actions">
+              <button type="button" class="secondary" id="recalculate-target">Recalculate from target</button>
+              <button type="button" class="secondary" id="reset-recommendation">Reset</button>
+            </div>
           </div>
 
           <div class="gauge-stack" id="gauge-stack"></div>
@@ -236,7 +261,7 @@
           <h2>How it works</h2>
           <p>
             The calculator converts each note to frequency, uses scale length and string unit weight to estimate
-            pounds of tension, then chooses the closest available gauge for the selected material and feel target.
+            pounds of tension, then chooses the closest available gauge for the selected material and target tension.
             Change a gauge and the tension updates.
           </p>
         </article>

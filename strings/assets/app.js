@@ -19,6 +19,12 @@ const copyListButton = document.querySelector('#copy-list');
 const copyStatus = document.querySelector('#copy-status');
 const shoppingLinks = document.querySelector('#shopping-links');
 const materialNote = document.querySelector('#material-note');
+const lineNote = document.querySelector('#line-note');
+const customTargetInput = document.querySelector('#custom-target');
+const recommendationState = document.querySelector('#recommendation-state');
+const tensionRange = document.querySelector('#tension-range');
+const recalculateTargetButton = document.querySelector('#recalculate-target');
+const resetRecommendationButton = document.querySelector('#reset-recommendation');
 const assumptionLabel = document.querySelector('#assumption-label');
 const assumptionDetail = document.querySelector('#assumption-detail');
 
@@ -28,7 +34,9 @@ let baseTuningRows = [...tuningRows];
 let activePresetId = 'standard';
 let tuningShiftSemitones = 0;
 let targetTensionLbs = 22;
+let targetTensionLabel = 'Average';
 let selectedWoundMaterial = 'phosphor_bronze';
+let selectedStringLine = 'standard';
 let gaugeOverrides = new Map();
 let latestResults = [];
 let audioContext = null;
@@ -92,6 +100,29 @@ const MATERIALS = {
     note: 'D\'Addario describes this family as soft, easy, warm, and mellow.',
   },
 };
+const STRING_LINES = {
+  standard: {
+    label: 'Standard',
+    note: 'Uncoated baseline when available. This is the clearest first custom-set target.',
+    shoppingLabel: 'standard',
+  },
+  xt: {
+    label: 'XT',
+    note: 'Longer-life treated strings. In this prototype, line choice guides buying preference, not tension math.',
+    shoppingLabel: 'XT coated',
+  },
+  xs: {
+    label: 'XS',
+    note: 'Longest-life coated strings. In this prototype, line choice guides buying preference, not tension math.',
+    shoppingLabel: 'XS coated',
+  },
+};
+const MATERIAL_LINE_AVAILABILITY = {
+  phosphor_bronze: ['standard', 'xt', 'xs'],
+  bronze_80_20: ['standard', 'xt', 'xs'],
+  nickel_bronze: ['standard'],
+  silk_steel: ['standard'],
+};
 const TYPE_LABELS = {
   plain_steel: 'plain steel',
   phosphor_bronze: 'phosphor bronze',
@@ -151,7 +182,8 @@ function formatType(type) {
 }
 
 function amazonSearchUrl(row) {
-  const query = `D'Addario ${row.sku} ${formatGauge(row.gauge)} ${formatType(row.type)} single string`;
+  const line = STRING_LINES[selectedStringLine].shoppingLabel;
+  const query = `D'Addario ${line} ${row.sku} ${formatGauge(row.gauge)} ${formatType(row.type)} single string`;
   return `https://www.amazon.com/s?k=${encodeURIComponent(query)}&tag=${encodeURIComponent(AMAZON_ASSOCIATE_TAG)}`;
 }
 
@@ -248,6 +280,10 @@ function setActiveButton(selector, button) {
   document.querySelectorAll(selector).forEach(el => el.classList.toggle('is-active', el === button));
 }
 
+function isLineAvailable(lineId) {
+  return MATERIAL_LINE_AVAILABILITY[selectedWoundMaterial]?.includes(lineId);
+}
+
 function syncPresetButtons() {
   document.querySelectorAll('[data-preset]').forEach(button => {
     const isActive = tuningShiftSemitones === 0 && button.dataset.preset === activePresetId;
@@ -264,9 +300,24 @@ function syncScaleButtons() {
 
 function syncMaterialCopy() {
   const material = MATERIALS[selectedWoundMaterial];
+  if (!isLineAvailable(selectedStringLine)) {
+    selectedStringLine = 'standard';
+  }
+  const line = STRING_LINES[selectedStringLine];
   materialNote.textContent = `${material.note} Only wound rows use this material; plain rows stay steel.`;
-  assumptionLabel.textContent = `${material.label} where the row is wound; plain steel where the row is plain.`;
-  assumptionDetail.textContent = 'Rows labeled plain steel are not affected by the material picker. Change a gauge to see the tension math update.';
+  lineNote.textContent = line.note;
+  document.querySelectorAll('[data-line]').forEach(button => {
+    const available = isLineAvailable(button.dataset.line);
+    button.disabled = !available;
+    button.classList.toggle('is-active', button.dataset.line === selectedStringLine);
+  });
+  assumptionLabel.textContent = `${material.label}, ${line.label}; plain steel where the row is plain.`;
+  assumptionDetail.textContent = 'Material and target tension pick the starting gauges. String life guides buying preference; the current tension math uses acoustic unit weights.';
+}
+
+function syncTargetInput() {
+  if (document.activeElement === customTargetInput) return;
+  customTargetInput.value = Number.isInteger(targetTensionLbs) ? String(targetTensionLbs) : targetTensionLbs.toFixed(1);
 }
 
 function formatShiftAmount() {
@@ -309,12 +360,31 @@ function formatShoppingList(results) {
     `Scale: ${Number.isFinite(scaleLengthInches) ? `${scaleLengthInches}"` : scaleInput.value}`,
     `Tuning: ${tuningRows.join(' ')}${preset ? ` (${preset}${moved})` : ''}`,
     `Material: ${MATERIALS[selectedWoundMaterial].label} for wound rows`,
+    `String life: ${STRING_LINES[selectedStringLine].label}`,
+    `Target tension: ${targetTensionLabel} (${targetTensionLbs.toFixed(1)} lb/string)`,
     `Total tension: ${results.reduce((sum, row) => sum + row.tension, 0).toFixed(1)} lb`,
   ];
   const rows = results.map((row, index) => (
     `${index + 1}. ${row.note} ${formatGauge(row.gauge)} ${row.sku} ${formatType(row.type)} ${row.tension.toFixed(1)} lb`
   ));
   return [...header, '', ...rows].join('\n');
+}
+
+function getTensionStatus(tension) {
+  const delta = tension - targetTensionLbs;
+  if (delta <= -8) {
+    return { label: 'very low', className: 'status-very-low', description: `${Math.abs(delta).toFixed(1)} lb below target` };
+  }
+  if (delta <= -4) {
+    return { label: 'low', className: 'status-low', description: `${Math.abs(delta).toFixed(1)} lb below target` };
+  }
+  if (delta >= 8) {
+    return { label: 'very high', className: 'status-very-high', description: `${delta.toFixed(1)} lb above target` };
+  }
+  if (delta >= 4) {
+    return { label: 'high', className: 'status-high', description: `${delta.toFixed(1)} lb above target` };
+  }
+  return { label: 'ok', className: 'status-ok', description: `${Math.abs(delta).toFixed(1)} lb from target` };
 }
 
 function renderShoppingList(results) {
@@ -366,13 +436,20 @@ function renderAnswer(results) {
   latestResults = results;
   gaugeStack.replaceChildren();
   const total = results.reduce((sum, row) => sum + row.tension, 0);
+  const min = Math.min(...results.map(row => row.tension));
+  const max = Math.max(...results.map(row => row.tension));
+  const hasOverrides = results.some(row => row.isOverride);
   totalTension.textContent = `${total.toFixed(1)} lb`;
+  recommendationState.textContent = hasOverrides ? 'Your custom set' : 'Recommended starting set';
+  tensionRange.textContent = `Target: ${targetTensionLabel} ${targetTensionLbs.toFixed(1)} lb/string. Range: ${min.toFixed(1)}-${max.toFixed(1)} lb.`;
   renderShoppingList(results);
 
   results.forEach((row, index) => {
     const card = document.createElement('article');
-    card.className = 'gauge-card';
-    const fillWidth = Math.max(10, Math.min(100, (row.tension / 24) * 100));
+    const status = getTensionStatus(row.tension);
+    card.className = `gauge-card ${status.className}`;
+    const fillBase = Math.max(30, targetTensionLbs * 1.45);
+    const fillWidth = Math.max(8, Math.min(100, (row.tension / fillBase) * 100));
     const gaugeOptions = stringsForType(row.type)
       .map(entry => `<option value="${entry.sku}"${entry.sku === row.sku ? ' selected' : ''}>${formatGauge(entry.gauge)}</option>`)
       .join('');
@@ -392,7 +469,11 @@ function renderAnswer(results) {
       <div class="gauge-meta">
         <span>${row.tension.toFixed(1)} lb</span>
         <span>${formatType(row.type)}</span>
+        <span>${status.label}</span>
+      </div>
+      <div class="gauge-note">
         <span>${gaugeState}</span>
+        <span>${status.description}</span>
       </div>
     `;
     gaugeStack.append(card);
@@ -418,6 +499,7 @@ function updateAll() {
   syncPresetButtons();
   syncShiftControls();
   syncMaterialCopy();
+  syncTargetInput();
   renderEditor();
   syncPasteField();
   try {
@@ -518,17 +600,39 @@ document.querySelectorAll('[data-preset]').forEach(button => {
 document.querySelectorAll('[data-target]').forEach(button => {
   button.addEventListener('click', () => {
     targetTensionLbs = Number(button.dataset.target);
+    targetTensionLabel = button.dataset.targetLabel;
     gaugeOverrides.clear();
     setActiveButton('[data-target]', button);
     updateAll();
   });
 });
 
+customTargetInput.addEventListener('input', () => {
+  const value = Number(customTargetInput.value);
+  if (!Number.isFinite(value) || value <= 0) return;
+  targetTensionLbs = value;
+  targetTensionLabel = 'Custom';
+  gaugeOverrides.clear();
+  document.querySelectorAll('[data-target]').forEach(button => button.classList.remove('is-active'));
+  updateAll();
+});
+
 document.querySelectorAll('[data-material]').forEach(button => {
   button.addEventListener('click', () => {
     selectedWoundMaterial = button.dataset.material;
+    if (!isLineAvailable(selectedStringLine)) {
+      selectedStringLine = 'standard';
+    }
     gaugeOverrides.clear();
     setActiveButton('[data-material]', button);
+    updateAll();
+  });
+});
+
+document.querySelectorAll('[data-line]').forEach(button => {
+  button.addEventListener('click', () => {
+    if (button.disabled || !isLineAvailable(button.dataset.line)) return;
+    selectedStringLine = button.dataset.line;
     updateAll();
   });
 });
@@ -572,6 +676,16 @@ gaugeStack.addEventListener('change', event => {
   const select = event.target.closest('.gauge-select');
   if (!select) return;
   gaugeOverrides.set(Number(select.dataset.index), select.value);
+  updateAll();
+});
+
+recalculateTargetButton.addEventListener('click', () => {
+  gaugeOverrides.clear();
+  updateAll();
+});
+
+resetRecommendationButton.addEventListener('click', () => {
+  gaugeOverrides.clear();
   updateAll();
 });
 
